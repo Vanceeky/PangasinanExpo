@@ -1,0 +1,103 @@
+{% extends 'home/layout.html' %}
+
+{% load allauth %}
+{% load socialaccount %}
+
+
+{% block title %} Login Account {% endblock %}
+
+
+{% block stylesheet %}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="header-body text-center">
+    <div class="row justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+          <h1 class="text-dark">Welcome!</h1>
+          <h4 class="text-lead text-dark">Sign in to unlock the best of PangasinanExpo.</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<section class="upper">
+  <div class="container">
+     <div class="col-lg-5 col-md-8 mx-auto">
+        <div class="card bg-secondary shadow border-0">
+           <div class="card-header bg-white pb-3">
+              <div class="text-muted text-center mb-3"><small>Login with</small></div>
+              <div class="btn-wrapper text-center">
+                 <a href="#" class="btn btn-neutral btn-icon">
+                 <span class="btn-inner--icon"><img src="/static/assets/img/icons/common/facebook.svg"></span>
+                 <span class="btn-inner--text">Facebook</span>
+                 </a>
+                 <a href="{% provider_login_url 'google' %}" class="btn btn-neutral btn-icon">
+                 <span class="btn-inner--icon"><img src="/static/assets/img/icons/common/google.svg"></span>
+                 <span class="btn-inner--text">Google</span>
+                 </a>
+              </div>
+           </div>
+           <div class="card-body px-lg-5">
+              <div class="text-center text-muted mb-4">
+                {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                      
+                        
+                 <small>{{ message }}</small>
+                    {% endfor %}
+                </div>
+                {% else %}
+                
+                <small>Or login with credentials</small>
+              {% endif %}
+
+
+              </div>
+              <form role="form" method="post" action="{% url 'auth-page' %}">
+                {% csrf_token %}
+
+                <div class="form-group mb-3">
+                    <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                        </div>
+                        <input class="form-control" name="login" placeholder="Email" type="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                        </div>
+                        <input class="form-control" name="password" placeholder="Password" type="password" required>
+                    </div>
+                </div>
+                <small>Not a member? <a href="{% url 'account_signup' %}"><span>Join now</span></a></small>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary my-4">Login</button>
+                </div>
+            </form>
+            
+           </div>
+        </div>
+     </div>
+  </div>
+</section>
+      
+
+{% endblock %}
+
+
+{% block js %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,180 @@
+<!--
+=========================================================
+* Argon Design System - v1.2.2
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-design-system
+* Copyright 2020 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+  <title>
+    {% block title %} {% endblock %} | PangasinanExpo
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link href="/static/assets/css/font-awesome.css" rel="stylesheet" />
+  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+
+  <link href="{% static 'assets/css/argon-design-system-pro.css' %}?v=1.0.3" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" >
+
+  <style>
+
+   {% block stylesheet %}
+
+
+   {% endblock %}
+
+
+   .search{
+      position: relative;
+      width: 90%;
+      margin: auto;
+      
+      }
+
+      .search input{
+
+      height: 50px;
+      text-indent: 25px;
+      border-radius: 50px;
+
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-right: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for input */
+      transition: box-shadow 0.3s;
+
+      }
+
+
+      .search input:focus{
+
+      box-shadow: none;
+      border: 2px solid #ccc;
+
+      }
+
+      .search .fa-search{
+
+      position: absolute;
+      top: 15px;
+      left: 16px;
+
+      }
+
+      .search button{
+          border-radius:50px;
+      position: absolute;
+      top: 5px;
+      right: 0;
+      height: 50px;
+      width: 110px;
+
+      }
+
+
+     
+
+  </style>
+
+
+
+</head>
+
+<body class="sections-page">
+  <!-- Navbar -->
+
+
+
+  <!-- End Navbar -->
+  <div class="wrapper">
+    
+   <div class="container">
+
+
+      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-9 mb-2 mb-md-0">
+         <div class="row align-items-center mb-2">
+            <div class="col-lg-3">
+               
+            <a href="/" class=" display-4 d-inline-flex link-body-emphasis text-decoration-none">
+               PangasinanExpo
+            </a>
+
+         </div>
+            <div class="col-lg-9">
+               <form class="" role="search">
+                  <div class="search">
+                     <i class="fa fa-search text-dark"></i>
+                     <input type="text" class="form-control" id="searchInput" placeholder="Search here....">
+                     <div class="suggestions" id="suggestions"></div>
+                  </div>
+               </form>
+            </div>
+         </div>
+
+        </div>
+  
+
+
+
+
+  
+        <div class="col-md-3 text-end">
+         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="#"  class="nav-link px-2 link-secondary">Partner with us</a></li>
+            <li><a href="#" class="btn bg-gradient-dark text-white  rounded-pill nav-link px-2">Sign In</a></li>
+          </ul>
+        </div>
+
+      </header>
+    </div>
+
+    {% block content %}
+
+
+    {% endblock %}
+
+    {% include 'includes/footer.html' %}
+
+  </div>
+  <!--   Core JS Files   -->
+  {% include 'includes/scripts.html' %}
+
+
+  {% block js %}
+
+  {% endblock %}
+
+
+
+
+
+</body>
+
+</html>
