@@ -150,6 +150,16 @@ Coded by www.creative-tim.com
             font-weight: bold;
         }
 
+        .custom-button {
+            background-color: #007bff; /* Replace with your desired color */
+            border: none; /* Optional: Remove border */
+        }
+        
+        .custom-button:hover {
+            background-color: #0056b3; /* Darker shade for hover effect */
+        }
+
+        
 
   </style>
 
@@ -163,76 +173,200 @@ Coded by www.creative-tim.com
   <!-- End Navbar -->
   <div class="wrapper">
     
-    <nav class="navbar navbar-expand-lg  navbar-absolute">
+    <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg bg-default navbar-dark  headroom py-2">
         <div class="container">
-           <div class="navbar-translate">
-              <a class="navbar-brand display-4" href="javascript:;">PangasinanExpo</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#example-header-6" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon navbar-dark"></span>
-              </button>
-           </div>
-           <div class="collapse navbar-collapse" id="example-header-6">
+           <a class="navbar-brand mr-lg-5 text-white" href="/">
+           <img src="./assets/img/brand/white.png">
+           PangasinanExpo
+           </a>
+           <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="navbar-collapse collapse" id="navbar_global" style="">
               <div class="navbar-collapse-header">
                  <div class="row">
                     <div class="col-6 collapse-brand">
-                       <a>
-                       Pangasinan <span> Expo </span>
+                       <a href="./index.html">
+                       <img src="./assets/img/brand/blue.png">
+                       PangasinanExpo
                        </a>
                     </div>
-                    <div class="col-6 collapse-close text-right">
-                       <button type="button" class="navbar-toggler " data-bs-toggle="collapse" data-bs-target="#example-header-6" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <div class="col-6 collapse-close">
+                       <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
                        <span></span>
                        <span></span>
                        </button>
                     </div>
                  </div>
               </div>
-              <ul class="navbar-nav mx-auto">
+              <ul class="navbar-nav navbar-nav-hover align-items-lg-center ml-lg-auto">
 
-                 <li class="nav-item">
-                    <a class="nav-link font-weight-bolder" href="javascript:;">
-                    Home
+                 <li class="nav-item dropdown">
+                    <a href="javascript:;" class="nav-link" data-toggle="dropdown" role="button">
+                    <i class="ni ni-single-copy-04 d-lg-none"></i>
+                    <span class="nav-link-inner--text">Categories</span>
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        
+                        <a class="dropdown-item" href="{% url 'categories' 'Beach' %}">
+                            <img src="/static/assets/img/svg/beach2.svg" alt="Beach Icon" width="25" height="25" class="mr-3">
+                            Beach
+                         </a>
+                         <a class="dropdown-item" href="{% url 'categories' 'Mountains' %}">
+                            <img src="/static/assets/img/svg/mountains.svg" alt="Beach Icon" width="25" height="25" class="mr-3"> Mountains
+                         </a>
+                         <a class="dropdown-item" href="{% url 'categories' 'Falls' %}">
+                            <img src="/static/assets/img/svg/waterfalls.svg" alt="Beach Icon" width="25" height="25" class="mr-3"> Waterfalls
+                         </a>
+                         <a class="dropdown-item" href="{% url 'categories' 'Rivers' %}">
+                            <img src="/static/assets/img/svg/river.svg" alt="Beach Icon" width="25" height="25" class="mr-3"> Rivers
+                         </a>
+                         <a class="dropdown-item" href="{% url 'categories' 'Churches' %}">
+                            <img src="/static/assets/img/svg/church.svg" alt="Beach Icon" width="25" height="25" class="mr-3"> Churches
+                            </a>
+                         <a class="dropdown-item" href="{% url 'categories' 'Others' %}">
+                            <img src="/static/assets/img/svg/other.svg" alt="Beach Icon" width="25" height="25" class="mr-3"> Others
+                         </a>
+
+                    </div>
                  </li>
                  <li class="nav-item">
-                    <a class="nav-link font-weight-bolder" href="javascript:;">
-                    About Us
+                    <a href="{% url 'accommodations' %}" class="nav-link" role="button">
+                    <i class="ni ni-tablet-button d-lg-none"></i>
+                    <span class="nav-link-inner--text">Accommodations</span>
                     </a>
                  </li>
-                 <li class="nav-item">
-                    <a class="nav-link font-weight-bolder" href="javascript:;">
-                    Products
-                    </a>
-                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link font-weight-bolder" href="javascript:;">
-                    Contact Us
-                    </a>
-                 </li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-                 <li class="nav-item ">
-                    <a class="nav-link" href="https://twitter.com/CreativeTim">
-                    <i class="fab fa-twitter"></i>
-                    </a>
-                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="https://www.facebook.com/CreativeTim">
-                    <i class="fab fa-facebook-square"></i>
-                    </a>
-                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="https://www.instagram.com/CreativeTimOfficial">
-                    <i class="fab fa-instagram"></i>
-                    </a>
-                 </li>
+
+
+                    {% if request.user.is_authenticated %}
+
+                        <li class="nav-item dropdown">
+                            <a href="javascript:;" class="btn btn-white" data-toggle="dropdown" role="button">
+                            <i class="fa fa-user"></i>
+                            <span class="nav-link-inner--text">Account</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="">
+                                    <i class="ni ni-lock-circle-open text-muted"></i>
+                                    Write a review
+                                </a>
+                                <a class="dropdown-item" href="{% url 'add-accommodation-page' %}">
+                                    <i class="ni ni-lock-circle-open text-muted"></i>
+                                    Add accommodation
+                                </a>
+                            <a class="dropdown-item" href="">
+                            <i class="ni ni-lock-circle-open text-muted"></i>
+                            Account Settings
+                            </a>
+                            <a class="dropdown-item" href="">
+                            <i class="ni ni-tv-2 text-danger"></i>
+                            Sign out
+                            </a>
+
+                            </div>
+                        </li>
+
+                    {% else %}
+
+                        <li class="nav-item dropdown">
+                            <a href="{% url 'auth-page' %}" class="btn btn-white">
+                            <i class="ni ni-basket d-lg-none"></i>
+                            <span class="nav-link-inner--text">Login</span>
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+
               </ul>
            </div>
         </div>
     </nav>
 
+    <header class="header-1">
+        <nav class="navbar navbar-expand-lg bg-default navbar-absolute">
+           <div class="container">
+              <a class="navbar-brand text-white" href="javascript:;">Argon</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header-1" aria-controls="navbar-header-1" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbar-header-1">
+                 <div class="navbar-collapse-header">
+                    <div class="row">
+                       <div class="col-6 collapse-brand">
+                          <a href="./index.html">
+                          <img src="./assets/img/brand/blue.png">
+                          </a>
+                       </div>
+                       <div class="col-6 collapse-close">
+                          <button type="button" class="navbar-toggler custom-button" data-toggle="collapse" data-target="#navbar-header-1" aria-controls="navbar-header-1" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class=""></span>
+                          <span></span>
+                          </button>
+                       </div>
+                    </div>
+                 </div>
+                 <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                       <a class="nav-link text-white" href="javascript:;">
+                       Home
+                       </a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link text-white" href="javascript:;">
+                       About Us
+                       </a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link text-white" href="javascript:;">
+                       Contact Us
+                       </a>
+                    </li>
+                 </ul>
+                 <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                       <a class="nav-link text-white" href="https://twitter.com/CreativeTim">
+                       <i class="fab fa-twitter"></i>
+                       </a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link text-white" href="https://www.facebook.com/CreativeTim">
+                       <i class="fab fa-facebook-square"></i>
+                       </a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link text-white" href="https://www.instagram.com/CreativeTimOfficial">
+                       <i class="fab fa-instagram"></i>
+                       </a>
+                    </li>
+                 </ul>
+              </div>
+           </div>
+        </nav>
+        <div class="page-header">
+           <div class="page-header-image" style="background-image: url('/static/assets/img/p2.svg')"></div>
+           <div class="container">
+              <div class="row">
+                 <div class="col-lg-12 mr-auto text-left d-flex justify-content-center flex-column">
+                    <h3 class="display-3 display_header text-center ">Where To?</h3>
+                    <div class="d-flex justify-content-center mb-3 search_buttons">
+                        <a type="button" class="text-dark font-weight-bold active" id="searchAll"><i class="fa fa-search mx-2"></i>Search All</a>
+                        <a class="text-dark font-weight-bold" id="searchHotels"><i class="fa fa-building mx-2"></i>Accomodations</a>
+                
+                    </div>
+                    <div class="search">
+                        <i class="fa fa-search text-dark"></i>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Places to go, hotels, transcients....">
+                        <button class="btn bg-gradient-info text-white">Search</button>
+                        <div class="suggestions" id="suggestions"></div>
+                    </div>
+                    <br>
 
-
+                 </div>
+              </div>
+           </div>
+        </div>
+     </header>
 
 
 
@@ -241,13 +375,14 @@ Coded by www.creative-tim.com
 
     <div class="cd-section" id="headers">
 
-      <header class="header-3 header-filter">
+      <header class="header-3 header-filter" >
 
 
-        <div class="search-bar text-white mb-5 mt-5">
-            <div class="row height d-flex justify-content-center align-items-center">
+        <!--
+        <div class="search-bar text-white mb-5 mt-5" >
+            <div class="row height d-flex justify-content-center align-items-center" >
                 <div class="search-header text-center w-50 mt-5">
-                    <h1 class="display_header font-weight-bolder text-dark">Where To? {{ request.user }}</h1>
+                    <h1 class="display_header font-weight-bolder text-dark">Where To?</h1>
                     <div class="d-flex justify-content-center mb-3 search_buttons">
                         <a type="button" class="text-dark font-weight-bold active" id="searchAll"><i class="fa fa-search mx-2"></i>Search All</a>
                         <a class="text-dark font-weight-bold" id="searchHotels"><i class="fa fa-building mx-2"></i>Accomodations</a>
@@ -263,7 +398,7 @@ Coded by www.creative-tim.com
                 </div>
             </div>
         </div>
-
+        -->
         
         
         <div class="page-header">
@@ -387,7 +522,7 @@ Coded by www.creative-tim.com
               <div class="col-lg-6">
                  <div class="card card-blog card-background" data-animation="zooming">
                     <div class="full-background" style="background-image: url('/static/assets/img/cat_beach.webp"></div>
-                    <a href="javascript:;">
+                    <a href="{% url 'categories' 'Beach' %}">
                        <div class="card-body">
                           <div class="content-bottom">
                              <h6 class="card-category text-white opacity-8">Patar Beach</h6>
@@ -402,7 +537,7 @@ Coded by www.creative-tim.com
               <div class="col-lg-6">
                  <div class="card card-blog card-background" data-animation="zooming">
                     <div class="full-background" style="background-image: url('/static/assets/img/mapita_view_deck.jpg"></div>
-                    <a href="javascript:;">
+                    <a href="{% url 'categories' 'Mountains' %}">
                        <div class="card-body">
                           <div class="content-bottom">
                              <h6 class="card-category text-white opacity-8">Mapita View Deck</h6>
@@ -415,7 +550,7 @@ Coded by www.creative-tim.com
               <div class="col-lg-3">
                  <div class="card card-blog card-background" data-animation="zooming">
                     <div class="full-background" style="background-image: url('/static/assets/img/bolinao_falls.jpg"></div>
-                    <a href="javascript:;">
+                    <a href="{% url 'categories' 'Falls' %}">
                        <div class="card-body">
                           <div class="content-bottom">
                              <h6 class="card-category text-white opacity-8">Bolinao Falls</h6>
@@ -428,7 +563,7 @@ Coded by www.creative-tim.com
               <div class="col-lg-3">
                  <div class="card card-blog card-background" data-animation="zooming">
                     <div class="full-background" style="background-image: url('/static/assets/img/balincaguing_river.jpg"></div>
-                    <a href="javascript:;">
+                    <a href="{% url 'categories' 'Rivers' %}">
                        <div class="card-body">
                           <div class="content-bottom">
                              <h6 class="card-category text-white opacity-8">Balincaguing River</h6>

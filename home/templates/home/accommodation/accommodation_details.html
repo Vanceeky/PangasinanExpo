@@ -1,0 +1,197 @@
+{% extends 'home/layout.html' %}
+
+
+{% block title %} Accomodation Detail {% endblock %}
+
+
+{% block stylesheet %}
+
+.accommodation_splide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px; /* Adjust height as needed */
+
+}
+
+.splide__slide .card-image {
+  width: 500px;
+  height: 350px;
+  overflow: hidden;
+}
+
+.splide__slide .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+        
+<div class="container mt-4">
+
+      <h3 class="display-3 mb-5">Accommodation Details</h3>
+      <div class="media-area">
+        <div class="media-header">
+          <div class="row">
+            <div class="col-md-6 d-flex justify-content-start">
+              <div class="avatar">
+                <img class="media-object shadow" src="/static/assets/img/faces/team-2.jpg" alt="...">
+              </div>
+              <div class="text">
+                <span class="name h1">{{ accomodation.name }}</span>
+                  <div class="meta">            
+                      <p class="text-underline">
+                      <i class="fa fa-map-marker fa"></i> {{ accomodation.address }}, {{ accommodation.city_town }}, Pangasinan</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="splide">
+              <div class="splide__track">
+                <ul class="splide__list">
+                  {% for ac in accomodation.images.all %}
+                  <li class="splide__slide accommodation_splide" id="">
+                      <div class="image">
+                      <img src="{{ ac.image.url }}" alt="">
+                    </div>
+                  </li>
+                  {% endfor %}
+
+                </ul>
+              </div>
+          </div>
+
+            
+
+          <p class="description">
+            {{ accomodation.description }}...
+            <a href="javascript:;"> Read More </a>
+          </p>
+
+        </div>
+      </div>
+
+      
+  
+
+</div>
+
+<div class="wrapper">
+
+  <section class="section bg-secondary">
+    <div class="w-75 m-auto">
+  
+          <div class="row">
+              <div class="col-lg-12 col-md-8 mx-auto">
+                  <div class="">
+
+                      <h2 class="title mb-5">Rooms Available for Booking</h2>
+                     
+                  </div>
+                  {% for room in rooms %}
+
+                  <div class="row">
+                    <div class="col-md-5 pr-md-0">
+                      <div class="card card-pricing text-center bg-default">
+                        <div class="card-header bg-transparent">
+                          <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">{{ room.room_type }}</h4>
+                        </div>
+                        <div class="card-body px-lg-6">
+                          <div class="display-2 text-white">₱ {{ room.price_per_night}}</div>
+                          <span class=" text-muted">per night</span>
+                          <ul class="list-unstyled my-4">
+                            {% for amenity in room.get_amenities_list %}
+                            <li>
+                              <div class="d-flex align-items-center">
+                                <div>
+                                  <div class="icon icon-xs icon-shape icon-shape-primary shadow rounded-circle">
+                                    <i class="ni ni-folder-17 text-white"></i>
+                                  </div>
+                                </div>
+                                <div>
+                                  <span class="pl-2 text-sm">{{ amenity }}</span>
+                                </div>
+                              </div>
+                            </li>
+                            {% empty %}
+                                <li>No amenities listed.</li>
+                            {% endfor %}
+
+
+
+                          </ul>
+                          <button type="button" class="btn btn-primary mb-3">Book now</button>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                          <a href="javascript:;" class=" text-muted">Contact</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-7 pl-md-0">
+                      <div class="card card-pricing border-0 text-center my-5">
+
+                        <div class="card-body px-lg-6">
+                          <div class="splide" id="splide-{{ room.id }}">
+                            <div class="splide__track">
+                              <ul class="splide__list">
+                                  {% for images in room.images.all %}
+                                  <li class="splide__slide">
+                                    <div class="card-image shadow w-100">
+                                        <a href="javascript:;">
+                                          <img class="img rounded" src="{{ images.image.url }}">
+                                        </a>
+                                    </div>
+                                  </li>
+                                  {% endfor %}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                 {% endfor %}
+    
+              </div>
+           </div>
+       </div>
+  
+  </section>
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Splide for each room
+      var roomSplides = document.querySelectorAll('.splide');
+      roomSplides.forEach(function(splideElement) {
+          new Splide(splideElement, {
+              type     : 'loop',  
+              autoplay : false,      
+              interval : 3000,      
+              pauseOnHover: false,  
+              resetProgress: false, 
+          }).mount();
+      });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends 'home/layout.html' %}
+
+
+{% block title %} Hundred Islands {% endblock %}
+
+
+{% block stylesheet %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<section class="section bg-white">
+    <div class=" container m-auto mt-4">
+        <div class="d-flex justify-content-between p-3 mb-2 align-items-center mt-5">
+            <h4 class="card-title">
+                <a href="{% url 'place-details' spot.id %}">{{ spot.name }}</a>
+
+            </h4>
+    
+            <div class="d-flex">
+                
+                <a href="" class="cursor-pointer font-weight-bold"><i class="fa fa-map-marker mx-2"></i>{{ spot.address }}, <span class="text-underline">{{ spot.city_or_town}}, Pangasinan </span></a>
+                <a href="" class="cursor-pointer"><i class="fa fa-heart-o mx-2"></i>Save </a>
+                
+            </div>
+        </div>
+
+    <div id="info">
+
+        <button id="toggleInstructions" class="btn btn-outline-info m-3">Show Instructions</button>
+        
+    </div>
+
+    <div id="map" style="width: 100%; height: 500px;"></div>
+
+</div>
+</section>
+
+
+    {% endblock %}
+
+
+    {% block js %}
+
+    <script>
+        
+        mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
+
+        cnsole.log('test')
+        const destinationCoordinates = [{{ spot.longitude }}, {{ spot.latitude }}]; 
+        
+        navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+            enableHighAccuracy: true
+        });
+        
+        function successLocation(position) {
+            const userLocation = [position.coords.longitude, position.coords.latitude];
+            setupMap(userLocation);
+        }
+        
+        function errorLocation() {
+            console.warn("Geolocation failed. Defaulting to Hundred Islands.");
+            setupMap([{{ spot.longitude }}, {{ spot.latitude }}]); 
+        }
+        
+        function setupMap(center) {
+            const map = new mapboxgl.Map({
+                container: "map",
+                style: "mapbox://styles/mapbox/streets-v11",
+                center: center,
+                zoom: 10 // Initial zoom level
+            });
+
+            const nav = new mapboxgl.NavigationControl();
+            map.addControl(nav);
+
+            // Initialize the Mapbox Directions plugin
+            const directions = new MapboxDirections({
+                accessToken: mapboxgl.accessToken,
+                unit: 'metric',
+                profile: 'mapbox/driving',
+                interactive: false,
+                controls: {
+                    inputs: false, 
+                    instructions: true, 
+                    profileSwitcher: false // Enable profile selection
+                }
+            });
+
+            map.addControl(directions, "top-left");
+
+            // Set the user's location as the origin for directions (Point A)
+            directions.setOrigin(center); // Current location
+
+            // Set the destination (Point B)
+            directions.setDestination(destinationCoordinates); // Hundred Islands National Park
+
+            // Add markers for both locations
+            const userMarker = new mapboxgl.Marker({ color: "blue" }) // User marker
+                .setLngLat(center)
+                .setPopup(new mapboxgl.Popup().setHTML("<h3>Your Location</h3>"))
+                .addTo(map);
+
+            const destinationMarker = new mapboxgl.Marker({ color: "red" }) // Destination marker
+                .setLngLat(destinationCoordinates)
+                .setPopup(new mapboxgl.Popup().setHTML("<h3>Hundred Islands National Park</h3>"))
+                .addTo(map);
+
+            // Fit the map to show both markers
+            const bounds = new mapboxgl.LngLatBounds();
+            bounds.extend(center);
+            bounds.extend(destinationCoordinates);
+            map.fitBounds(bounds, { padding: 50 }); // Adds padding around the markers
+
+            // Listen for route changes and display ETA and distance
+            directions.on('route', function(e) {
+                if (e.route.length > 0) {
+                    const route = e.route[0];
+                    const etaMinutes = Math.round(route.duration / 60);
+                    const distanceKm = (route.distance / 1000).toFixed(1);
+                    
+                    document.getElementById('eta').innerText = `Estimated Travel Time: ${etaMinutes} minutes`;
+                    document.getElementById('distance').innerText = `Distance: ${distanceKm} km`;
+                } else {
+                    document.getElementById('eta').innerText = `No route found.`;
+                    document.getElementById('distance').innerText = `Distance: N/A`;
+                }
+            });
+
+            // Toggle instructions visibility
+            const toggleButton = document.getElementById('toggleInstructions');
+            toggleButton.addEventListener('click', function() {
+                const instructionsElement = document.querySelector('.mapbox-directions-instructions'); // Access instructions directly using a selector
+                if (instructionsElement) {
+                    if (instructionsElement.style.display === "none" || instructionsElement.style.display === "") {
+                        instructionsElement.style.display = "block"; // Show instructions
+                        toggleButton.innerText = "Hide Instructions"; // Change button text
+                    } else {
+                        instructionsElement.style.display = "none"; // Hide instructions
+                        toggleButton.innerText = "Show Instructions"; // Change button text
+                    }
+                } else {
+                    console.warn("Instructions element not found.");
+                }
+            });
+        }
+    </script>
+
+
+    {% endblock %}
+
+

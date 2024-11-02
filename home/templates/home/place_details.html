@@ -6,26 +6,74 @@
 
 {% block stylesheet %}
 
-section #testimonials_ {
-    border-bottom: 1px solid #ccc;
-}
-section #testimonials_ p{
-    font-size: 10pt;
-}
-
-section #testimonials_ h6{
-    margin-top: 2px;
-    font-size: 12pt;
+/* Set the dimensions for each slide */
+.splide__slide img {
+  width: 100%;   /* Set desired width */
+  height: 550px;  /* Set desired height */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
 }
 
-section #testimonials_ img{
-    margin-right: 5px;
+/* Optional: center-align carousel */
+.splide {
+  display: flex;
+  justify-content: center;
+}
+.responsive-div {
+    width: 100%; /* Full width on small screens */
 }
 
-section #testimonials {
-    height: 430px;
-    overflow: auto;
+@media (min-width: 992px) {
+    .responsive-div {
+        width: 75%; /* 75% width on large screens */
+    }
 }
+
+
+.rate {
+    display: inline-block;
+    text-align: center;
+}
+
+/* Styling for stars */
+.rate:not(:checked) > input {
+    position: absolute;
+    top: -9999px;
+}
+
+.rate:not(:checked) > label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+
+
+
 
 {% endblock %}
 
@@ -35,205 +83,543 @@ section #testimonials {
 {% block content %}
 
 
-<section class="header container">
-    <div class="d-flex justify-content-between align-items-center">
-        <h3>Hudred Islands</h3>
 
-        <div class="d-flex">
-            
-            <a href="" class="cursor-pointer font-weight-bold"><i class="fa fa-map-marker mx-2"></i>Alaminos, Pangasinan </a>
-            <a href="" class="cursor-pointer"><i class="fa fa-heart-o mx-2"></i>Save </a>
-            
-        </div>
-    </div>
+    <section class="section bg-white">
+        <div class="responsive-div m-auto mt-5">
+        
+            <div class="d-flex justify-content-end mb-2 align-items-center mt-5">
 
-    <div class="card shadow p-3 rounded">
-        <div class="row">
-                <div class="col-md-4">
-                    <div class="card-header pb-0">
-                        <h5 class="mb-3 text-underline"> What people are saying </h5>
-                    </div>
-                    <div class="" id="testimonials">
-
-
-                            <div class="card-body p-3 pt-1" id="testimonials_">
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <img src="/static/assets/img/team-2.jpg" class="avatar avatar-sm ms-3" alt="avatar image">
-                                        <a href=""><h6 class="text-sm">Lucas Prila</h6></a>
-                                    </div>
-                                
-                                        
-                                    <p class="text-xs">2h ago</p>
-                                </div>
-                                <a href=""><h6 class="text-sm">"Beach Break"</h6></a>
-                                <p class="text-xxs test"><em>A lot of activities too, like cliff jumping, banana boat, snorkeling and swimming of course.</em></p>
-                 
-                            </div>
-
-                            <div class="card-body p-3 pt-1" id="testimonials_">
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <img src="/static/assets/img/team-2.jpg" class="avatar avatar-sm" alt="avatar image">
-                                        <h6 class="text-sm">Lucas Prila</h6>
-                                    </div>
-                                
-                                        
-                                    <p class="text-xs">2h ago</p>
-                                </div>
-                                <h6 class="text-sm">"Beach Break"</h6>
-                                <p class="text-xxs test"><em>A lot of activities too, like cliff jumping, banana boat, snorkeling and swimming of course.</em></p>
-                 
-                            </div>
-                            <div class="card-body p-3 pt-1" id="testimonials_">
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <img src="/static/assets/img/team-2.jpg" class="avatar avatar-sm ms-3" alt="avatar image">
-                                        <h6 class="text-sm">Lucas Prila</h6>
-                                    </div>
-                                
-                                        
-                                    <p class="text-xs">2h ago</p>
-                                </div>
-                                <h6 class="text-sm">"Beach Break"</h6>
-                                <p class="text-xxs test"><em>A lot of activities too, like cliff jumping, banana boat, snorkeling and swimming of course.</em></p>
-                 
-                            </div>
-
-                            <div class="card-body p-3 pt-1" id="testimonials_">
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <img src="/static/assets/img/team-2.jpg" class="avatar avatar-sm" alt="avatar image">
-                                        <h6 class="text-sm">Lucas Prila</h6>
-                                    </div>
-                                
-                                        
-                                    <p class="text-xs">2h ago</p>
-                                </div>
-                                <h6 class="text-sm">"Beach Break"</h6>
-                                <p class="text-xxs test"><em>A lot of activities too, like cliff jumping, banana boat, snorkeling and swimming of course.</em></p>
-                 
-                            </div>
-
-
-                     </div>
-                </div>
-
-                <div class="col-md-8">
-                    <div id="main-slider" class="splide">
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                <li class="splide__slide">
-                                    <img src="/static/assets/img/balincaguing_river.jpg">
-                                </li>
-                                <li class="splide__slide"><img src="/static/assets/img/cape_bolinao.jfif"></li>
-                                <li class="splide__slide"><img src="/static/assets/img/manaoag.jpg"></li>
-                                <li class="splide__slide"><img src="/static/assets/img/mapita_view_deck.jpg"></li>
-                            </ul>
-                        </div>
-                    </div>
-                
-                    <!-- Thumbnail Slider -->
-                    <div id="thumbnail-slider" class="splide">
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                <li class="splide__slide"><img src="/static/assets/img/balincaguing_river.jpg"></li>
-                                <li class="splide__slide"><img src="/static/assets/img/cape_bolinao.jfif"></li>
-                                <li class="splide__slide"><img src="/static/assets/img/manaoag.jpg"></li>
-                                <li class="splide__slide"><img src="/static/assets/img/mapita_view_deck.jpg"></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
-
-</section>
-
-
-
-
-<div class="section">
-    <div class="container">
-
-        <div id='map' style='width: 100vh; height: 100vh;'></div>
-
-
-        <a class="carousel-control-prev" href="#carouselFade" role="button" data-bs-slide="prev">
-            <i class="ni ni-bold-left"></i>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselFade" role="button" data-bs-slide="next">
-            <i class="ni ni-bold-right"></i>
-            <span class="sr-only">Next</span>
-        </a>
-
-       <div class="row">
-          <div class="col-md-8 text-center mx-auto">
-             <h3 class="display-3">The time is now</h3>
-             <p class="lead">The time is now to be okay to be the greatest you. Would you believe in what you believe in, if you were the only one who believed it?</p>
-          </div>
-       </div>
-       <div class="row align-items-center">
-          <div class="col-lg-4 mr-auto text-left mt-4">
-             <div class="card bg-default shadow border-0">
-
-   
-             </div>
-          </div>
-          <div class="col-lg-7 p-sm-0">
-             <div class="row">
-                <div class="col-md-6">
-
+    
+                <div class="d-flex">
+                    
+                    <a href="" class="cursor-pointer font-weight-bold"><i class="fa fa-map-marker mx-2"></i>{{ spot.address }}, <span class="text-underline">{{ spot.city_or_town}}, Pangasinan </span></a>
+                    <a href="" class="cursor-pointer"><i class="fa fa-heart-o mx-2"></i>Save </a>
                     
                 </div>
-                <div class="col-md-6">
-                   <div class="info info-hover-info">
-                      <div class="icon icon-shape bg-info shadow rounded-circle text-primary">
-                         <i class="ni ni-palette text-white"></i>
-                      </div>
-                      <h5 class="info-title">Awesome Design</h5>
-                      <p class="description opacity-8">As we live, our hearts turn colder. Cause pain is what we go through as we become older.</p>
-                   </div>
+            </div>
+    
+            <div class="card shadow p-3 rounded">
+                <div class="row">
+
+                    <div class="col-md-8">
+                        <div class="splide">
+                            <div class="splide__track">
+                              <ul class="splide__list">
+                                {% for img in images %}
+                                    <li class="splide__slide">
+                                        <img src="{{ img.image.url }}">
+                                    </li>
+                                {% endfor %}
+                                <!-- Add more slides as needed -->
+                              </ul>
+                            </div>
+                        </div>
+        
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h1 class="card-title">
+                                    <a href="javascript:;">{{ spot.name }}</a>
+    
+                                </h1>
+                                
+
+                            </div>
+                           <p class="card-description">
+                              {{ spot.description }} <a href="javascript:;"> Read More </a>
+                           </p>
+                           <div class="author">
+                              
+                                <span class="rating">
+                                 
+                                 
+                                            <i class="fas fa-star" aria-hidden="true"></i>
+                                            <i class="far fa-star" aria-hidden="true"></i>
+                                            <i class="far fa-star" aria-hidden="true"></i>                                        
+                                            <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
+                                            10 Reviews
+                                </span>
+
+                                <br>
+                                <a href="{% url 'map-direction' spot.id %}" type="button" class="btn btn-outline-info mt-3"><i class="fa fa-map"></i> View map directions</a>
+ 
+                             
+                           </div>
+                        </div>
+
+
+
+                    </div>
+
+
                 </div>
+            </div>
+
+            <div class="">
+                <div id="info">
+
+                    <button id="toggleInstructions" class="btn btn-outline-info m-3">Show Instructions</button>
+                    
+                </div>
+            
+                <div id="map" style="width: 100%; height: 500px;"></div>
+            </div>
+        </div>
+    
+    </section>
+
+
+
+    <div class="wrapper">
+
+        <section class="section bg-secondary">
+          <div class="w-75 m-auto">
+        
+                <div class="row">
+                    <div class="col-lg-12 col-md-8 mx-auto">
+                        <div class="">
+    
+                            <h2 class="title mb-5">Accomodations near Hundred Islands</h2>
+                           
+                        </div>
+                       <div class="card card-blog card-plain blog-horizontal mb-5">
+                          <div class="row">
+                             <div class="col-lg-4">
+                                <div class="card-image shadow">
+                                   <a href="javascript:;">
+                                   <img class="img rounded" src="/static/assets/img/ac.avif">
+                                   </a>
+                                </div>
+                             </div>
+                             <div class="col-lg-8">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h1 class="card-title">
+                                            <a href="javascript:;">OBLU SELECT Lobigili</a>
+                                            <p class="text-underline">
+                                                <i class="fa fa-map-marker fa-2x"></i> Alaminos, Pangasinan</p>
+                
+                                        </h1>
+                                        
+                                        <a type="button" class"border-round btn btn-info">Save <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+    
+                                    </div>
+                                   <p class="card-description">
+                                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, sequi. Eum repellendus rerum incidunt quam magnam voluptates nisi officia iste fugiat necessitatibus, perspiciatis sed id ea illo maiores tempora expedita.... <a href="javascript:;"> Read More </a>
+                                   </p>
+                                   <div class="author">
+                                      
+                                        <span class="rating">
+                                         
+                                         
+                                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                                    <i class="far fa-star" aria-hidden="true"></i>
+                                                    <i class="far fa-star" aria-hidden="true"></i>                                        
+                                                    <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
+                                                    10 Reviews
+                                        </span>
+         
+                                     
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+          
+                    </div>
+                 </div>
              </div>
-             <div class="row mt-lg-4">
+        
+        </section>
+    
+    </div>
+
+    <div class="w-75 m-auto">
+        <div class="row mt-3">
+            <div class="col-lg-4 col-12 md-0 mt-4">
+                <div class="card h-auto ">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                       <h5 class="text-capitalize">Reviews</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                       <ul class="list-group list-group-flush list border-bottom">
+                        <li class="list-group-item px-0 mb-2">
+                            <div class="align-items-center">
+                               <div class="d-flex justify-content-between align-items-center">
+                           
+                                <h4>
+                                    {{ average|floatformat:1 }}
+                                    <span class="rating">
+                                        {% for i in "12345" %}
+                                            {% if average >= i|add:0 %}
+                                                <i class="fas fa-star" aria-hidden="true"></i>
+                                            {% elif average >= i|add:-0.5 %}
+                                                <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                            {% else %}
+                                                <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </h4>
+                                <p>{{ total_reviews }} reviews</p>  <!-- Use total_reviews directly -->
+
+              
+
+
+                               </div>
+                            </div>
+                         </li>
+                                    
+                       </ul>
+
+
+                         <div class=" justify-content-between align-items-center">
+                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
+                            <div class="progress progress-xs mb-0">
+                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                            </div>
+
+                         </div>
+                         <div class="mt-2">
+                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
+                            <div class="progress progress-xs mb-0">
+                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                            </div>
+
+                         </div>
+                         <div class=" justify-content-between align-items-center">
+                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
+                            <div class="progress progress-xs mb-0">
+                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                            </div>
+
+                         </div>
+                         <div class="mt-2">
+                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
+                            <div class="progress progress-xs mb-0">
+                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                            </div>
+
+                         </div>
+                         <div class=" justify-content-between align-items-center">
+                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
+                            <div class="progress progress-xs mb-0">
+                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                            </div>
+
+                         </div>
+
+
+             
+
+                       <button class=" mt-4 btn btn-outline-info btn-sm w-100" data-toggle="modal" data-target="#add-review">Write a review</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-lg-8 col-12 md-0">
+
+
+                <div class="card-body">
+
+                    <div class="card h-100 w-100">
+                        <div class="card-header d-flex justify-content-between align-items-center border-bottom py-3">
+                          <div class="d-flex align-items-center">
+                            <a href="javascript:;">
+                              <img src="/static/assets/img/team-4.jpg" class="avatar" alt="profile-image">
+                            </a>
+                            <div class="mx-3">
+                              <a href="javascript:;" class="text-dark font-weight-600 text-sm">John Snow</a>
+                              <small class="d-block text-muted">3 days ago</small>
+                            </div>
+                          </div>
+                          <div class="text-end ms-auto">
+                            <button type="button" class="btn btn-xs btn-primary mb-0">
+                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
+                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
+                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
+                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
+                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <p class="mb-4">
+                            Personal profiles are the perfect way for you to grab their attention and persuade recruiters to continue reading your CV because you’re telling them from the off exactly why they should hire you.
+                          </p>
+                          <img alt="Image placeholder" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/activity-feed.jpg" class="img-fluid border-radius-lg shadow-lg max-height-500">
+                          <div class="row align-items-center px-2 mt-4 mb-2">
+                            <div class="col-sm-6">
+                              <div class="d-flex">
+                                <div class="d-flex align-items-center">
+                                    <span class="text-sm me-3 font-weight-bold ">Visited in October 25, 2024, With Family</span>
+                            
+                                  
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+         
+
+            
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!--
+<div class="section">
+     <div class="container">
+
+            <div class="row">
+
                 <div class="col-md-6">
-                   <div class="info info-hover-danger">
-                      <div class="icon icon-shape bg-danger shadow rounded-circle text-primary">
-                         <i class="ni ni-user-run text-white"></i>
-                      </div>
-                      <h5 class="info-title">Fast Development</h5>
-                      <p class="description opacity-8">We’re not always in the position that we want to be at. We’re constantly growing.</p>
-                   </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div id="map" style="width: 100%; height: 800px;"></div>
+                    <div id="eta" style="padding: 10px; font-weight: bold;"></div>
+                    <div id="distance" style="padding: 10px; font-weight: bold;"></div>
+                    <div id="hotels"></div>
+                </div>
+
+
+                
+            </div>
+
+
+
+    </div>
+
+</div>
+
+-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-review" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Write a review</h5>
+        </div>
+        <div class="modal-body">
+            <center>
+                <input type="hidden" value="" name="place_detail_id">
+                <h5> How would you rate your experience? </h5>
+                <div class="rate" style="text-align: center;">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="text">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" />
+                    <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" />
+                    <label for="star1" title="text">1 star</label>
+                </div>
+            </center>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="monthSelect">When did you go?</label>
+                        <select class="form-control" id="monthSelect">
+                            <option value="">Select a month</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="col-md-6">
-                   <div class="info info-hover-success">
-                      <div class="icon icon-shape bg-success shadow rounded-circle text-primary">
-                         <i class="ni ni-glasses-2 text-white"></i>
-                      </div>
-                      <h5 class="info-title">Super Fresh</h5>
-                      <p class="description opacity-8">When we lose family over time. What else could rust the heart more over time? Blackgold.</p>
-                   </div>
+                    <div class="form-group">
+                        <label for="monthSelect">Who did you go with?</label>
+                        <select class="form-control">
+                            <option value="">Solo</option>
+                            <option value="">Family</option>
+                            <option value="">Friends</option>
+                            <option value="">Couples</option>
+                            <option value="">Business</option>
+                        </select>
+                    </div>
                 </div>
-             </div>
-          </div>
-       </div>
+
+            
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title your review</label>
+                <input type="email" class="form-control" id="" placeholder="Give us the gist of your experience">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Write your review</label>
+                <textarea class="form-control" id="" rows="2" placeholder="The views were amazing. We took so many photos!..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Upload some photos<small> ( Optional ) </small> </label>
+                <input type="file" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                
+            </div>
+
+
+            
+
+
+            <!-- Hidden input field to store the selected rating -->
+            <input type="hidden" id="selected-rating" name="rating" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn bg-primary text-white">Add review</button>
+        </div>
+      </div>
     </div>
 </div>
+
+
 
 {% endblock %}
 
 
 
 {% block js %}
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+
+<script>
+    // Function to handle the display of the comment box when a star is selected
+    document.querySelectorAll('.rate input').forEach((input) => {
+        input.addEventListener('change', function() {
+            const ratingValue = this.value;
+            // Update the hidden input field with the selected rating value
+            document.getElementById('selected-rating').value = ratingValue;
+
+            // Show the comment box when a star is selected
+            document.getElementById('comment-box').style.display = 'block';
+        });
+    });
+</script>
 
 
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
+
+    const destinationCoordinates = [{{ spot.longitude }}, {{spot.latitude}}]; // Coordinates for Hundred Islands National Park
+    console.log(destinationCoordinates)
+    navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+        enableHighAccuracy: true
+    });
+    
+    function successLocation(position) {
+        const userLocation = [position.coords.longitude, position.coords.latitude];
+        setupMap(userLocation);
+    }
+    
+    function errorLocation() {
+        console.warn("Geolocation failed. Defaulting to Hundred Islands.");
+        setupMap([{{ spot.longitude }}, {{spot.latitude}}]); // Use Hundred Islands as fallback
+    }
+    
+    function setupMap(center) {
+        const map = new mapboxgl.Map({
+            container: "map",
+            style: "mapbox://styles/mapbox/streets-v11",
+            center: center,
+            zoom: 10 // Initial zoom level
+        });
+
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav);
+
+        // Initialize the Mapbox Directions plugin
+        const directions = new MapboxDirections({
+            accessToken: mapboxgl.accessToken,
+            unit: 'metric',
+            profile: 'mapbox/driving',
+            interactive: false,
+            controls: {
+                inputs: false, // Disable input boxes for point A and B
+                instructions: true, // Enable turn-by-turn instructions
+                profileSwitcher: true // Enable profile selection
+            }
+        });
+
+        map.addControl(directions, "top-left");
+
+        // Set the user's location as the origin for directions (Point A)
+        directions.setOrigin(center); // Current location
+
+        // Set the destination (Point B)
+        directions.setDestination(destinationCoordinates); // Hundred Islands National Park
+
+        // Add markers for both locations
+        const userMarker = new mapboxgl.Marker({ color: "blue" }) // User marker
+            .setLngLat(center)
+            .setPopup(new mapboxgl.Popup().setHTML("<h3>Your Location</h3>"))
+            .addTo(map);
+
+        const destinationMarker = new mapboxgl.Marker({ color: "red" }) // Destination marker
+            .setLngLat(destinationCoordinates)
+            .setPopup(new mapboxgl.Popup().setHTML("<h3>Hundred Islands National Park</h3>"))
+            .addTo(map);
+
+        // Fit the map to show both markers
+        const bounds = new mapboxgl.LngLatBounds();
+        bounds.extend(center);
+        bounds.extend(destinationCoordinates);
+        map.fitBounds(bounds, { padding: 50 }); // Adds padding around the markers
+
+        // Listen for route changes and display ETA and distance
+        directions.on('route', function(e) {
+            if (e.route.length > 0) {
+                const route = e.route[0];
+                const etaMinutes = Math.round(route.duration / 60);
+                const distanceKm = (route.distance / 1000).toFixed(1);
+                
+                document.getElementById('eta').innerText = `Estimated Travel Time: ${etaMinutes} minutes`;
+                document.getElementById('distance').innerText = `Distance: ${distanceKm} km`;
+            } else {
+                document.getElementById('eta').innerText = `No route found.`;
+                document.getElementById('distance').innerText = `Distance: N/A`;
+            }
+        });
+
+        // Toggle instructions visibility
+        const toggleButton = document.getElementById('toggleInstructions');
+        toggleButton.addEventListener('click', function() {
+            const instructionsElement = document.querySelector('.mapbox-directions-instructions'); // Access instructions directly using a selector
+            if (instructionsElement) {
+                if (instructionsElement.style.display === "none" || instructionsElement.style.display === "") {
+                    instructionsElement.style.display = "block"; // Show instructions
+                    toggleButton.innerText = "Hide Instructions"; // Change button text
+                } else {
+                    instructionsElement.style.display = "none"; // Hide instructions
+                    toggleButton.innerText = "Show Instructions"; // Change button text
+                }
+            } else {
+                console.warn("Instructions element not found.");
+            }
+        });
+    }
+</script>
+
+
+<!--
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
 
@@ -321,42 +707,45 @@ section #testimonials {
             .catch(err => console.error(err));
     }
 </script>
-  
+-->
+
+
 <script>
-    var main = new Splide('#main-slider', {
-        type       : 'fade',
-        heightRatio: 0.7,
-        pagination : false,
-        arrows     : false,
-        cover      : true,
+    var splide = new Splide('.splide', {
+      type     : 'loop',    // Enable looping
+      autoplay : true,      // Enable autoplay
+      interval : 3000,      // Interval between slides in milliseconds (e.g., 3000ms = 3 seconds)
+      pauseOnHover: false,  // Optional: prevents pause on hover
+      resetProgress: false, // Optional: prevents progress reset after each loop
     });
-
-    var thumbnails = new Splide('#thumbnail-slider', {
-        rewind          : true,
-        fixedWidth      : 104,
-        fixedHeight     : 58,
-        isNavigation    : true,
-        gap             : 10,
-        focus           : 'center',
-        pagination      : false,
-        cover           : true,
-        dragMinThreshold: {
-            mouse: 4,
-            touch: 10,
-        },
-        breakpoints : {
-            640: {
-                fixedWidth  : 66,
-                fixedHeight : 38,
-            },
-        },
-    });
-
-    main.sync(thumbnails);
-    main.mount();
-    thumbnails.mount();
-    
+  
+    splide.mount();
 </script>
 
+
+
+
+<!-- SCRIPT FOR SELECT OPTIONS-->
+
+<script>
+    // Get the current date
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const monthSelect = document.getElementById('monthSelect');
+
+    // Array of month names
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    // Loop through the months and create options
+    monthNames.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = `${month} ${currentYear}`;
+        option.textContent = `${month} ${currentYear}`;
+        monthSelect.appendChild(option);
+    });
+</script>
 
 {% endblock %}

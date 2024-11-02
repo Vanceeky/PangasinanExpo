@@ -32,15 +32,30 @@ Coded by www.creative-tim.com
   <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <link href="/static/assets/css/font-awesome.css" rel="stylesheet" />
-  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
 
   <link href="{% static 'assets/css/argon-design-system-pro.css' %}?v=1.0.3" rel="stylesheet" />
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
-  <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
-   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" >
+
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" type="text/css" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"></script>
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+
+      <!-- Include SweetAlert2 CSS and JS -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      
+
+  {% block head %}
+
+  {% endblock %}
 
   <style>
 
@@ -50,56 +65,58 @@ Coded by www.creative-tim.com
    {% endblock %}
 
 
-   .search{
-      position: relative;
-      width: 90%;
-      margin: auto;
-      
-      }
+    .search{
+        position: relative;
+        width: 90%;
+        margin: auto;
+        
+        }
 
-      .search input{
+        .search input{
 
-      height: 50px;
-      text-indent: 25px;
-      border-radius: 50px;
+        height: 50px;
+        text-indent: 25px;
+        border-radius: 50px;
 
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-right: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for input */
-      transition: box-shadow 0.3s;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-right: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for input */
+        transition: box-shadow 0.3s;
 
-      }
+        }
 
 
-      .search input:focus{
+        .search input:focus{
 
-      box-shadow: none;
-      border: 2px solid #ccc;
+        box-shadow: none;
+        border: 2px solid #ccc;
 
-      }
+        }
 
-      .search .fa-search{
+        .search .fa-search{
 
-      position: absolute;
-      top: 15px;
-      left: 16px;
+        position: absolute;
+        top: 15px;
+        left: 16px;
 
-      }
+        }
 
-      .search button{
-          border-radius:50px;
-      position: absolute;
-      top: 5px;
-      right: 0;
-      height: 50px;
-      width: 110px;
+        .search button{
+            border-radius:50px;
+        position: absolute;
+        top: 5px;
+        right: 0;
+        height: 50px;
+        width: 110px;
 
-      }
+        }
 
 
      
 
+  
+  
   </style>
 
 
@@ -108,61 +125,31 @@ Coded by www.creative-tim.com
 
 <body class="sections-page">
   <!-- Navbar -->
+   <div>
+
+      {% include 'includes/nav.html'%}
+      
+   </div>
+
+
+   <div class="wrapper">
+
+      <section class="section bg-white">
+        {% block content %}
 
 
 
-  <!-- End Navbar -->
-  <div class="wrapper">
-    
-   <div class="container">
-
-
-      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <div class="col-md-9 mb-2 mb-md-0">
-         <div class="row align-items-center mb-2">
-            <div class="col-lg-3">
-               
-            <a href="/" class=" display-4 d-inline-flex link-body-emphasis text-decoration-none">
-               PangasinanExpo
-            </a>
-
-         </div>
-            <div class="col-lg-9">
-               <form class="" role="search">
-                  <div class="search">
-                     <i class="fa fa-search text-dark"></i>
-                     <input type="text" class="form-control" id="searchInput" placeholder="Search here....">
-                     <div class="suggestions" id="suggestions"></div>
-                  </div>
-               </form>
-            </div>
-         </div>
-
-        </div>
-  
+        {% endblock %}
+      </section>
+   </div>
 
 
 
 
-  
-        <div class="col-md-3 text-end">
-         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#"  class="nav-link px-2 link-secondary">Partner with us</a></li>
-            <li><a href="#" class="btn bg-gradient-dark text-white  rounded-pill nav-link px-2">Sign In</a></li>
-          </ul>
-        </div>
-
-      </header>
-    </div>
-
-    {% block content %}
 
 
-    {% endblock %}
 
-    {% include 'includes/footer.html' %}
 
-  </div>
   <!--   Core JS Files   -->
   {% include 'includes/scripts.html' %}
 
