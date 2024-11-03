@@ -31,3 +31,7 @@ class RoomImageInline(admin.TabularInline):
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     inlines = [RoomImageInline]  # Add the inline to the Room admin
+
+
+
+admin.site.register(Booking)

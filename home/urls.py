@@ -18,7 +18,8 @@ urlpatterns = [
     path('add-accommodation/', views.add_accommodation_page, name="add-accommodation-page"),
     path('add-accommodation-listing/', views.add_accommodation, name="add_accommodation"),
     path('accommodation-details/<int:pk>/', views.accommodation_details, name="accommodation-details"),
-
+    path('accommodation/room/<int:pk>/', views.room_details, name="room-details"),
+    path('check-availability/', views.check_availability, name='check_availability'),
 
 
 

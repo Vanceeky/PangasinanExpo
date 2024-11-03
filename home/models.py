@@ -142,3 +142,55 @@ class RoomImage(models.Model):
     def __st__(self):
         return f"{self.room.name} Image"
 
+
+class Booking(models.Model):
+    guest = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='bookings')
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    status = models.CharField(max_length=20, choices=[
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('Cancelled', 'Cancelled')
+    ], default='Pending')
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Booking by {self.guest.username} for {self.room} from {self.check_in_date} to {self.check_out_date}"
+
+    def save(self, *args, **kwargs):
+        # Calculate total price based on room price and duration of stay
+        if self.check_in_date and self.check_out_date:
+            nights = (self.check_out_date - self.check_in_date).days
+            self.total_price = self.room.price_per_night * nights
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        """Check if the room is available for the requested dates."""
+        overlapping_bookings = Booking.objects.filter(
+            room=self.room,
+            status='Confirmed',
+            check_in_date__lt=self.check_out_date,
+            check_out_date__gt=self.check_in_date
+        ).exists()
+        return not overlapping_bookings
+    
+    def is_room_type_available(self):
+        """Check availability across rooms of the same type for the selected dates."""
+        # Get all rooms of the specified type
+        available_rooms = Room.objects.filter(room_type=self.room.room_type)    
+
+        # Filter out rooms that are already booked for overlapping dates
+        unavailable_rooms = Booking.objects.filter(
+            room__in=available_rooms,
+            status='Confirmed',
+            check_in_date__lt=self.check_out_date,
+            check_out_date__gt=self.check_in_date
+        ).values_list('room_id', flat=True)
+
+        # Check if there are any rooms left that are not in the unavailable list
+        available_count = available_rooms.exclude(id__in=unavailable_rooms).count()
+        return available_count > 0
+    
+

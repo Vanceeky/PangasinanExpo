@@ -3,29 +3,43 @@
 
 {% block title %} Accomodation Detail {% endblock %}
 
+{% block head %}
+
+
+{% endblock %}
+
 
 {% block stylesheet %}
 
-.accommodation_splide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 500px; /* Adjust height as needed */
+  .accommodation_splide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px; /* Adjust height as needed */
 
-}
+  }
 
-.splide__slide .card-image {
-  width: 500px;
-  height: 350px;
-  overflow: hidden;
-}
+  .splide__slide .card-image {
+    width: 500px;
+    height: 350px;
+    overflow: hidden;
+  }
 
-.splide__slide .card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+  .splide__slide .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
+  .responsive-width {
+    width: 90%; /* Default to 100% for small screens */
+  }
+
+  @media (min-width: 992px) {
+    .responsive-width {
+      width: 70%; /* 75% width on large screens */
+    }
+  }
 
 
 {% endblock %}
@@ -84,92 +98,227 @@
 
 </div>
 
-<div class="wrapper">
+<div class="wrapper ">
 
-  <section class="section bg-secondary">
-    <div class="w-75 m-auto">
+  <section class="section bg-secondary ">
+    <div class="responsive-width m-auto">
   
           <div class="row">
               <div class="col-lg-12 col-md-8 mx-auto">
-                  <div class="">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-5">
+                  <h2 class="title">Rooms Available for Booking</h2>
+                  <button class="btn btn-default mt-2 mt-md-0" data-toggle="modal" data-target="#check-modal">Check Availability</button>
+                </div>
+                
 
-                      <h2 class="title mb-5">Rooms Available for Booking</h2>
-                     
-                  </div>
-                  {% for room in rooms %}
-
-                  <div class="row">
-                    <div class="col-md-5 pr-md-0">
-                      <div class="card card-pricing text-center bg-default">
-                        <div class="card-header bg-transparent">
-                          <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">{{ room.room_type }}</h4>
-                        </div>
-                        <div class="card-body px-lg-6">
-                          <div class="display-2 text-white">₱ {{ room.price_per_night}}</div>
-                          <span class=" text-muted">per night</span>
-                          <ul class="list-unstyled my-4">
-                            {% for amenity in room.get_amenities_list %}
-                            <li>
-                              <div class="d-flex align-items-center">
-                                <div>
-                                  <div class="icon icon-xs icon-shape icon-shape-primary shadow rounded-circle">
-                                    <i class="ni ni-folder-17 text-white"></i>
+                  <div class="row d-flex">
+                    {% for room in rooms %}
+                        <div class="col-md-4 mb-2">
+                          <div class="card h-100" style="border-radius: 24px">
+                            <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                              <a href="javascript:;" class="d-block">
+                                <div class="splide" id="splide-{{ room.id }}">
+                                  <div class="splide__track">
+                                    <ul class="splide__list">
+                                      {% for images in room.images.all %}
+                                      <li class="splide__slide">
+                                        <div class="card-image shadow w-100">
+                                          <a href="javascript:;">
+                                            <img class="img-fluid" src="{{ images.image.url }}" style="border-radius:16px 16px 0 0;">
+                                          </a>
+                                        </div>
+                                      </li>
+                                      {% endfor %}
+                                    </ul>
                                   </div>
                                 </div>
-                                <div>
-                                  <span class="pl-2 text-sm">{{ amenity }}</span>
-                                </div>
-                              </div>
-                            </li>
-                            {% empty %}
-                                <li>No amenities listed.</li>
-                            {% endfor %}
-
-
-
-                          </ul>
-                          <button type="button" class="btn btn-primary mb-3">Book now</button>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                          <a href="javascript:;" class=" text-muted">Contact</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-7 pl-md-0">
-                      <div class="card card-pricing border-0 text-center my-5">
-
-                        <div class="card-body px-lg-6">
-                          <div class="splide" id="splide-{{ room.id }}">
-                            <div class="splide__track">
-                              <ul class="splide__list">
-                                  {% for images in room.images.all %}
-                                  <li class="splide__slide">
-                                    <div class="card-image shadow w-100">
-                                        <a href="javascript:;">
-                                          <img class="img rounded" src="{{ images.image.url }}">
-                                        </a>
+                              </a>
+                            </div>
+                            
+                            <div class="card-body pt-2 d-flex flex-column">
+                              <span>Room type: <span class="text-gradient text-primary text-uppercase text-xs font-weight-bold my-2">{{ room.room_type }}</span></span>
+                              
+                              <a href="javascript:;" class="card-title h5 d-block text-darker font-weight-bold">
+                                ₱ {{ room.price_per_night }} <small class="text-sm text-muted">/ per night</small>
+                              </a>
+                              <p class="card-description mb-2 flex-grow-1">
+                                <ul class="list-unstyled my-2">
+                                  {% for amenity in room.get_amenities_list %}
+                                  <li>
+                                    <div class="d-flex align-items-center">
+                                      <div>
+                                        <div class="icon icon-xs icon-shape icon-shape-default shadow rounded-circle">
+                                          <i class="ni ni-folder-17 text-white"></i>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <span class="pl-2 text-sm"><a href="javascript:;">{{ amenity }}</a></span>
+                                      </div>
                                     </div>
                                   </li>
+                                  {% empty %}
+                                  <li>No amenities listed.</li>
                                   {% endfor %}
-                              </ul>
+                                </ul>
+                              </p>
+
+
+                              <div class="author align-items-center">
+                      
+                    
+                                    <span class="text-md">Good for {{ room.capacity }} people </span>
+                          
+                              </div>
+
+                            </div>
+                            
+                            <div class="card-footer bg-transparent">
+                              <a type="button" class="btn btn-primary text-white" 
+                              data-toggle="modal" 
+                              data-target="#book-modal" 
+                              data-room-type="{{ room.room_type }}" 
+                              data-price="{{ room.price_per_night }}" 
+                              data-room-id="{{ room.id }}"
+                              data-capacity="{{ room.capacity }}">
+                              Book now
+                           </a>
                             </div>
                           </div>
                         </div>
-
-                      </div>
-                    </div>
+                    {% endfor %}
                   </div>
-
-                 {% endfor %}
+                  
     
               </div>
-           </div>
-       </div>
+          </div>
+    </div>
   
   </section>
 
 </div>
 
+
+<!-- Check Availability Modal -->
+<div class="modal fade" id="check-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Check Room Availability </h5>
+          <span aria-hidden="true"><a type="button" class="text-danger" data-dismiss="modal">&times;</a></span>
+       
+      </div>
+
+      <form id="availability-form">
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Room Type</label>
+            <select class="form-control" name="room_type" id="room_type">
+              {% for room in rooms %}
+                <option value="{{ room.room_type }}">{{room.room_type}} | ₱ {{ room.price_per_night }} / per night</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="example-date-input" class="form-control-label">Check-in Date: </label>
+                <input class="form-control" type="date" name="check_in_date" id="check_in_date" required>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="example-date-input" class="form-control-label">Check-out Date: </label>
+                <input class="form-control" type="date" name="check_out_date" id="check_out_date" required>
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+
+          <div id="availability-result"></div>
+
+
+        </div>
+
+        <div class="modal-footer bg-transparent">
+          <button type="button" onclick="checkAvailability()" class="btn bg-gradient-default text-white">Check Availability</button>
+        </div>
+
+      </form>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Booking modal -->
+<div class="modal fade" id="book-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Room type: <span class="room_type_header"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form id="bookingForm">
+        <div class="modal-body">
+          <input type="hidden" name="room_id" id="room_id_modal">
+
+          <a href="javascript:;" class="card-title h5 d-block text-darker font-weight-bold">
+            ₱ <span class="rate_per_night"></span> <small class="text-sm text-muted">/ per night</small> - 
+            <small>Good for <span class="number_people">3</span> people </small>
+          </a>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="check_in" class="form-control-label">Check-in Date: </label>
+                <input class="form-control" type="date" name="check_in" id="check_in" required>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="check_out" class="form-control-label">Check-out Date: </label>
+                <input class="form-control" type="date" name="check_out" id="check_out" required>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="nights" class="form-control-label">Number of nights: </label>
+                <input class="form-control" type="text" id="nights" readonly>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="total_price" class="form-control-label">Total Price: </label>
+                <input class="form-control" type="text" id="total_price" readonly>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" onclick="" class="btn bg-gradient-default text-white">Book room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 
@@ -178,6 +327,67 @@
 
 
 {% block js %}
+
+
+
+
+<script>
+  // Function to set today's date as the minimum date for the date inputs
+  function setMinDate() {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+
+    // Format the date as YYYY-MM-DD
+    const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+    // Set the min attribute for check-in and check-out dates
+    document.getElementById('check_in_date').setAttribute('min', formattedDate);
+    document.getElementById('check_out_date').setAttribute('min', formattedDate);
+  }
+
+  // Call the function on page load
+  window.onload = setMinDate;
+</script>
+
+<script>
+  function checkAvailability() {
+      const roomType = document.getElementById('room_type').value;
+      const checkInDate = document.getElementById('check_in_date').value;
+      const checkOutDate = document.getElementById('check_out_date').value;
+        // Check if the required fields have values
+      if (!roomType || !checkInDate || !checkOutDate) {
+          alert("Please fill in all the required fields.");
+          return; // Exit the function if any field is empty
+      }
+      fetch('/check-availability/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}' 
+          },
+          body: JSON.stringify({
+              room_type: roomType,
+              check_in_date: checkInDate,
+              check_out_date: checkOutDate
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          const resultDiv = document.getElementById('availability-result');
+          if (data.available) {
+              resultDiv.innerHTML = "Rooms are available!";
+          } else {
+              resultDiv.innerHTML = "No rooms available for the selected dates.";
+          }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+  
+</script>
+
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
       // Initialize Splide for each room
@@ -193,5 +403,56 @@
       });
   });
 </script>
+
+
+<script>
+  // Function to calculate the number of nights and total price
+  function calculateNightsAndPrice() {
+    const checkInDate = new Date(document.getElementById('check_in').value);
+    const checkOutDate = new Date(document.getElementById('check_out').value);
+    const pricePerNight = parseFloat(document.getElementById('room_id_modal').dataset.price);
+
+    if (!isNaN(checkInDate) && !isNaN(checkOutDate) && checkOutDate > checkInDate) {
+      const timeDifference = checkOutDate - checkInDate;
+      const nights = Math.ceil(timeDifference / (1000 * 3600 * 24)); // Convert ms to days
+      const totalPrice = nights * pricePerNight;
+
+      document.getElementById('nights').value = nights;
+      document.getElementById('total_price').value = `₱ ${totalPrice.toFixed(2)}`;
+    } else {
+      document.getElementById('nights').value = '';
+      document.getElementById('total_price').value = '';
+    }
+  }
+
+  // Event listener for check-in and check-out date changes
+  document.getElementById('check_in').addEventListener('input', calculateNightsAndPrice);
+  document.getElementById('check_out').addEventListener('input', calculateNightsAndPrice);
+
+  // Event listener for the booking button
+  document.querySelectorAll('.btn[data-toggle="modal"]').forEach(button => {
+    button.addEventListener('click', function() {
+      const roomType = this.getAttribute('data-room-type');
+      const price = this.getAttribute('data-price');
+      const roomId = this.getAttribute('data-room-id');
+      const capacity = this.getAttribute('data-capacity'); // Get capacity
+
+      document.querySelector('.room_type_header').textContent = roomType;
+      document.getElementById('room_id_modal').value = roomId;
+      document.getElementById('room_id_modal').dataset.price = price; // Store price as a dataset attribute
+      document.querySelector('.rate_per_night').textContent = price; // Update the rate per night display
+      document.querySelector('.number_people').textContent = capacity; // Update the number of people display
+
+      // Clear previous values
+      document.getElementById('check_in').value = '';
+      document.getElementById('check_out').value = '';
+      document.getElementById('nights').value = '';
+      document.getElementById('total_price').value = '';
+    });
+  });
+</script>
+
+
+
 
 {% endblock %}

@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import *
 
-
+from django.views.decorators.csrf import csrf_exempt
+import json
+from datetime import datetime
 
 def index(request):
     return render(request, 'index.html')
@@ -65,7 +67,7 @@ def add_accommodation(request):
             longitude = request.POST.get('longitude')
             
             # Create and save the Accommodation instance
-            accommodation = Accomodation(
+            accommodation = Accommodation(
                 manager=request.user,
                 name=name,
                 type=type,
@@ -100,6 +102,40 @@ def accommodation_details(request, pk):
     }
     return render(request, 'home/accommodation/accommodation_details.html', context)
 
+
+def room_details(request, pk):
+    room = Room.objects.get(id=pk)
+    context = {
+        'room': room
+    }
+    return render(request, 'home/accommodation/room_details.html', context)
+
+
+@csrf_exempt
+def check_availability(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        room_type = data.get('room_type')
+        check_in_date = datetime.strptime(data.get('check_in_date'), '%Y-%m-%d').date()
+        check_out_date = datetime.strptime(data.get('check_out_date'), '%Y-%m-%d').date()
+        
+        # Get all rooms of the selected type
+        rooms_of_type = Room.objects.filter(room_type=room_type)
+        
+        # Check for overlapping bookings on any of these rooms
+        overlapping_bookings = Booking.objects.filter(
+            room__in=rooms_of_type,
+            status='Confirmed',
+            check_in_date__lt=check_out_date,
+            check_out_date__gt=check_in_date
+        ).count()
+        
+        # If the number of overlapping bookings is less than the available rooms, we have availability
+        available = overlapping_bookings < rooms_of_type.count()
+        
+        return JsonResponse({'available': available})
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 # USER FUNCTIONS
 

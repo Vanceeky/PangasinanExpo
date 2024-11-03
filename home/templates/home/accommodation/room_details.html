@@ -1,0 +1,102 @@
+{% extends 'home/layout.html' %}
+
+
+{% block title %} {{ room.accommodation.name }} - {{ room.room_type }} {% endblock %}
+
+
+{% block head %}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+{% endblock %}
+
+
+{% block stylesheet %}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-4">
+    
+    <form id="availability-form">
+        <label for="room_type">Room Type:</label>
+
+
+        <input type="text" id="room_type" name="room_type" value="{{ room.room_type}}">
+    
+        <label for="check_in_date">Check-in Date:</label>
+        <input type="date" id="check_in_date" name="check_in_date" required>
+    
+        <label for="check_out_date">Check-out Date:</label>
+        <input type="date" id="check_out_date" name="check_out_date" required>
+    
+        <button type="button" onclick="checkAvailability()">Check Availability</button>
+    </form>
+    
+
+</div>
+
+
+<div id="availability-result"></div>
+
+
+
+<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+<script>
+    $(function() {
+      $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+      }, function(start, end, label) {
+        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+      });
+    });
+</script>
+
+<script>
+    function checkAvailability() {
+        const roomType = document.getElementById('room_type').value;
+        const checkInDate = document.getElementById('check_in_date').value;
+        const checkOutDate = document.getElementById('check_out_date').value;
+    
+        fetch('/check-availability/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}' 
+            },
+            body: JSON.stringify({
+                room_type: roomType,
+                check_in_date: checkInDate,
+                check_out_date: checkOutDate
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const resultDiv = document.getElementById('availability-result');
+            if (data.available) {
+                resultDiv.innerHTML = "Rooms are available!";
+            } else {
+                resultDiv.innerHTML = "No rooms available for the selected dates.";
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    
+</script>
+{% endblock %}
+
