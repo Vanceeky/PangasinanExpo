@@ -1,0 +1,105 @@
+{% extends 'home/admin/layout.html' %}
+
+{% block title %} Tourist Spots {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container-fluid my-4">
+
+
+    <nav aria-label="breadcrumb align-items-center">
+
+
+        <ol class="breadcrumb d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+                <h5 class="mt-2 d-none d-lg-block">Tourist Spots</h5>
+                <div class="vr mx-3 d-none d-lg-block "></div>
+                <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:;">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tourist Spots</li>
+            
+
+           
+            </div>
+
+            <!-- This button will appear on larger screens -->
+            <div class="d-flex align-items-center">
+                <button class="btn bg-default text-white d-none d-sm-block mt-3 w-100"><i class="fa fa-plus"></i> Add tourist spot</button>
+            </div>
+        </ol>
+
+        <!-- Full-width button on small screens (d-sm-none hides it on larger screens) -->
+        <button class="btn bg-white text-dark w-100 d-block d-sm-none"><i class="fa fa-plus"></i> Add tourist spot</button>
+
+        
+    
+    
+    </nav>
+
+
+    <div class="card">
+        <div class="table-responsive ">
+          <table class="table align-items-center mb-0 table-hover">
+            <thead>
+              <tr>
+                <th class=" text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Category</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2">Name</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">City / Town</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Address</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Coordinates</th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+                {% for spot in spots %}
+                    <tr>
+                        
+                        <td class="">
+                            <span class="text-secondary text-sm font-weight-bold ms-3">{{ spot.category }}</span>
+                        </td>
+
+                        <td>
+                            <span class="text-default text-sm font-weight-bold"><a href="{% url 'tourist-spot-admin' spot.id %}" class="text-primary">{{ spot.name }}</a></span>
+                        </td>
+
+                        <td class="align-middle text-center text-sm">
+                            <span class="text-secondary text-sm font-weight-bold">{{ spot.city_or_town }}</span>
+                        </td>
+
+                        <td class="align-middle text-center">
+                            <span class="text-secondary text-sm font-weight-bold">{{ spot.address }}</span>
+                        </td>
+
+                        <td class="text-center">
+                            <span class="text-secondary text-sm font-weight-bold">{{ spot.latitude }} / {{ spot.longitude }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+{% endblock %}

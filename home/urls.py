@@ -3,6 +3,10 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from home.view.admin import *
+
+
+
 
 
 urlpatterns = [
@@ -24,7 +28,17 @@ urlpatterns = [
 
 
     # USER URLS
-    path('dashboard/', views.user_dashboard, name="user_dashboard"),
+    path('user-dashboard/', views.user_dashboard, name="user_dashboard"),
+
+
+
+    #ADMIN DASHBOARD
+
+    path('dashboard/', dashboard, name="dashboard"),
+    path('tourist-spots/admin/', tourist_spots, name="tourist-spots-admin"),
+    path('tourist-spot/<int:pk>/admin/', tourist_spot, name="tourist-spot-admin"),
+
+
 ]
 
 

@@ -1,0 +1,384 @@
+{% extends 'home/admin/layout.html' %}
+
+{% block title %} {{ spot.name }} {% endblock %}
+
+{% block head %} 
+
+    <!-- Include Select2 CSS -->
+    <link href="/static/assets/css/select2.min.css" rel="stylesheet" />
+
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+  
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" type="text/css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"></script>
+  
+    
+
+{% endblock %}
+
+{% block stylesheet %}
+<style>
+    #map {
+        width: 100%;
+        height: 300px;
+    }
+    
+</style>
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container-fluid my-4">
+
+
+    <nav aria-label="breadcrumb align-items-center">
+
+
+        <ol class="breadcrumb d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+                <h5 class="mt-2 d-none d-lg-block">{{ spot.name }}</h5>
+                <div class="vr mx-3 d-none d-lg-block "></div>
+                <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:;">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="javascript:;">Tourist Spots</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ spot.name }}</li>
+            
+
+           
+            </div>
+
+        </ol>
+
+
+        
+    
+    
+    </nav>
+
+    
+
+    <div class="card mt-5 p-3">
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="home" aria-selected="true">General</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#images" role="tab" aria-controls="profile" aria-selected="false">Images</a>
+          </li>
+
+        </ul>
+      
+        <!-- Tab Content -->
+        <div class="tab-content mt-3" id="myTabContent">
+          <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row">
+                <div class="col-md-7">
+                    <form class="p-3">
+
+                        {% csrf_token %}
+
+                        <input id="latitude" name="latitude" class="form-control" type="hidden" value="{{ spot.latitude }}" disabled required="required">
+                        <input id="longitude" name="longitude" class="form-control" type="hidden" value="{{ spot.longitude }}" disabled required="required">
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Name</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="firstName" name="name" class="form-control" type="text" value="{{ spot.name }}" required="required">
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Description</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="description" id="desc_textarea" rows="1" oninput="autoResize(this)">{{ spot.description }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Address</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="firstName" name="address" class="form-control" type="text" value="{{ spot.address }}" required="required">
+                            </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">City or Town</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <select class="form-select" required name="city_or_town" id="city_or_town">
+                                    <option value="{{ spot.city_or_town }}" selected disabled>{{ spot.city_or_town }}</option> <!-- Default option -->
+                                
+                                    <option value=""></option>
+                                
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row mt-3">
+                            <div class="col-md-4 lign-self-center">
+                            <h6 class="label text-md" for="#firstName">Category</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <select class="form-select" required name="category" id="category">
+                                    <option value="{{ spot.category }}" selected disabled>{{ spot.category }}</option> <!-- Default option -->
+                                
+                                    <option value=""></option>
+                                
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+
+                <div class="col-md-5">
+                    <!-- Button to toggle the marker's draggable state -->
+
+                    <div class="card p-3">
+                        
+                        <div id="map"></div>
+                        
+                        <button id="toggleButton" class="btn btn-secondary mt-3" onclick="toggleDraggable()">Adjust Pin Location</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+          </div>
+          <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="profile-tab">
+            <h5>Profile Tab</h5>
+            <p>This is the content for the Profile tab.</p>
+          </div>
+
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<!-- Bootstrap 5 JS (for tabs functionality) -->
+<script src="/static/assets/js/select2.min.js"></script>
+<script src="/static/assets/js/bootstrap.min.js"></script>
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#city_or_town').select2({
+            placeholder: ".........................",
+            allowClear: true,
+      
+        });
+
+        $('#category').select2({
+            placeholder: ".........................",
+            allowClear: true,
+      
+        });
+
+    });
+</script>
+
+
+<script>
+    // List of towns
+    const towns = [
+        ['Agno', 'Agno'],
+        ['Aguilar', 'Aguilar'],
+        ['Alcala', 'Alcala'],
+        ['Anda', 'Anda'],
+        ['Asingan', 'Asingan'],
+        ['Balungao', 'Balungao'],
+        ['Bani', 'Bani'],
+        ['Basista', 'Basista'],
+        ['Bautista', 'Bautista'],
+        ['Bayambang', 'Bayambang'],
+        ['Binalonan', 'Binalonan'],
+        ['Binmaley', 'Binmaley'],
+        ['Bolinao', 'Bolinao'],
+        ['Bugallon', 'Bugallon'],
+        ['Burgos', 'Burgos'],
+        ['Calasiao', 'Calasiao'],
+        ['Dasol', 'Dasol'],
+        ['Infanta', 'Infanta'],
+        ['Labrador', 'Labrador'],
+        ['Laoac', 'Laoac'],
+        ['Lingayen', 'Lingayen'],
+        ['Mabini', 'Mabini'],
+        ['Malasiqui', 'Malasiqui'],
+        ['Manaoag', 'Manaoag'],
+        ['Mangaldan', 'Mangaldan'],
+        ['Mangatarem', 'Mangatarem'],
+        ['Mapandan', 'Mapandan'],
+        ['Natividad', 'Natividad'],
+        ['Pozorrubio', 'Pozorrubio'],
+        ['Rosales', 'Rosales'],
+        ['San Fabian', 'San Fabian'],
+        ['San Jacinto', 'San Jacinto'],
+        ['San Manuel', 'San Manuel'],
+        ['San Nicolas', 'San Nicolas'],
+        ['San Quintin', 'San Quintin'],
+        ['Santa Barbara', 'Santa Barbara'],
+        ['Santa Maria', 'Santa Maria'],
+        ['Santo Tomas', 'Santo Tomas'],
+        ['Sison', 'Sison'],
+        ['Sual', 'Sual'],
+        ['Tayug', 'Tayug'],
+        ['Umingan', 'Umingan'],
+        ['Urbiztondo', 'Urbiztondo'],
+        ['Villasis', 'Villasis'],
+        ['Alaminos', 'Alaminos'],   // City
+        ['Dagupan', 'Dagupan'],     // City
+        ['San Carlos', 'San Carlos'],  // City
+        ['Urdaneta', 'Urdaneta'],   // City
+    ];
+
+    // List of categories
+    const categories = [
+        ['Beach', 'Beach'],
+        ['Mountains', 'Mountains'],
+        ['Falls', 'Falls'],
+        ['Rivers', 'Rivers'],
+        ['Churches', 'Churches'],
+        ['Others', 'Others'],
+    ];
+
+    // Function to populate the town select options
+    function populateTowns() {
+        const selectElement = document.getElementById('city_or_town');
+        
+        towns.forEach(town => {
+            const option = document.createElement('option');
+            option.value = town[0];  // Set the value to the first element (town name)
+            option.textContent = town[1];  // Set the text content to the second element (town name)
+            selectElement.appendChild(option);
+        });
+    }
+
+    // Function to populate the category select options
+    function populateCategories() {
+        const selectElement = document.getElementById('category');
+        
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category[0];  // Set the value to the first element (category name)
+            option.textContent = category[1];  // Set the text content to the second element (category name)
+            selectElement.appendChild(option);
+        });
+    }
+
+    // Function to auto-resize the textarea based on content
+    function autoResize(element) {
+        // Reset height to auto to shrink if content is removed
+        element.style.height = 'auto';
+        // Set the height to scrollHeight (which adjusts for the content size)
+        element.style.height = (element.scrollHeight) + 'px';
+    }
+
+    // Combined window.onload function
+    window.onload = function() {
+        populateTowns();  // Populate towns dropdown
+        populateCategories();  // Populate categories dropdown
+        
+        const textarea = document.getElementById('desc_textarea');
+        if (textarea) {
+            autoResize(textarea);  // Resize the textarea if it has pre-filled content
+        }
+    };
+</script>
+
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
+    
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [120.0, 15.9], // Default center before setting to spot coordinates
+      zoom: 14
+    });
+    
+    map.addControl(new mapboxgl.NavigationControl());
+    
+    let marker;  // Declare marker globally
+    let isDraggable = false;  // Track draggable state
+  
+    function setupMap() {
+      // Get the latitude and longitude from the input fields
+      const latitude = parseFloat(document.getElementById('latitude').value);
+      const longitude = parseFloat(document.getElementById('longitude').value);
+      
+      // Check if latitude and longitude are valid numbers
+      if (isNaN(latitude) || isNaN(longitude)) {
+        alert('Invalid latitude or longitude values.');
+        return;
+      }
+      
+      // Set the map center to the spot's coordinates
+      map.setCenter([longitude, latitude]);
+      
+      // Create a marker at the spot's coordinates
+      marker = new mapboxgl.Marker({ draggable: isDraggable })
+        .setLngLat([longitude, latitude])
+        .addTo(map);
+      
+      // Update input fields when the marker is dragged
+      marker.on('dragend', () => {
+        const lngLat = marker.getLngLat();
+        document.getElementById('latitude').value = lngLat.lat;
+        document.getElementById('longitude').value = lngLat.lng;
+      });
+    }
+  
+    // Toggle marker draggable state
+    function toggleDraggable() {
+      isDraggable = !isDraggable;  // Toggle the draggable state
+      if (marker) {
+        marker.setDraggable(isDraggable);  // Set the new draggable state
+      }
+      const buttonText = isDraggable ? 'Save Location' : 'Adjust Pin Location';
+      document.getElementById('toggleButton').textContent = buttonText;  // Update button text
+    }
+  
+    map.on('load', setupMap);
+
+  </script>
+
+{% endblock %}
