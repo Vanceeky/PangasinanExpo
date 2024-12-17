@@ -16,7 +16,7 @@
  
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'assets/js/dataTables.min.js' %}"></script>
 
 <script src="{% static 'assets/js/argon-design-system-pro.js' %}?v=1.0.3" type="text/javascript"></script>
@@ -41,4 +41,17 @@
 
 
 
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register("/static/assets/js/serviceworker.js")
+      .then(function(registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+</script>
 
