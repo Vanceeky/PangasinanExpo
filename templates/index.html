@@ -121,6 +121,14 @@ Coded by www.creative-tim.com
             border-bottom: 2px solid #007bff; /* Active button border */
         }
 
+        #search_nearby_tourist_spot {
+            display: inline-block;
+        }
+        
+        #search_nearby_accommodation {
+            display: none;
+        }
+        
 
         .suggestions {
             position: absolute;
@@ -186,8 +194,8 @@ Coded by www.creative-tim.com
               <div class="navbar-collapse-header">
                  <div class="row">
                     <div class="col-6 collapse-brand">
-                       <a href="./index.html">
-                       <img src="./assets/img/brand/blue.png">
+                       <a href="">
+                       <img src="javascript:;">
                        PangasinanExpo
                        </a>
                     </div>
@@ -246,23 +254,32 @@ Coded by www.creative-tim.com
                             <span class="nav-link-inner--text">Account</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'user_dashboard' %}">
-                                    <i class="ni ni-lock-circle-open text-muted"></i>
-                                    Dashboard
-                                </a>
-                                <a class="dropdown-item" href="">
-                                    <i class="ni ni-lock-circle-open text-muted"></i>
-                                    Write a review
-                                </a>
+                                
+                                {% for group in request.user.groups.all %}
+                                    {% if group.name == "manager" %}
+                                    <a class="dropdown-item" href="{% url 'user_accomodation' %}">
+                                        <i class="ni ni-building text-muted"></i>
+                                        Manage Accommodation
+                                    </a>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if not request.user.groups.all %}
                                 <a class="dropdown-item" href="{% url 'add-accommodation-page' %}">
-                                    <i class="ni ni-lock-circle-open text-muted"></i>
-                                    Add accommodation
+                                   <i class="ni ni-lock-circle-open text-muted"></i>
+                                   Add accommodation
                                 </a>
-                            <a class="dropdown-item" href="">
+                                {% endif %}
+                                
+                            
+
+
+
+                            <a class="dropdown-item" href="{% url 'user_profile' %}">
                             <i class="ni ni-lock-circle-open text-muted"></i>
                             Account Settings
                             </a>
-                            <a class="dropdown-item" href="">
+                            <a class="dropdown-item" href="{% url 'custom_logout' %}">
                             <i class="ni ni-tv-2 text-danger"></i>
                             Sign out
                             </a>
@@ -288,65 +305,8 @@ Coded by www.creative-tim.com
     </nav>
 
     <header class="header-1">
-        <nav class="navbar navbar-expand-lg bg-default navbar-absolute">
-           <div class="container">
-              <a class="navbar-brand text-white" href="javascript:;">Argon</a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header-1" aria-controls="navbar-header-1" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbar-header-1">
-                 <div class="navbar-collapse-header">
-                    <div class="row">
-                       <div class="col-6 collapse-brand">
-                          <a href="./index.html">
-                          <img src="./assets/img/brand/blue.png">
-                          </a>
-                       </div>
-                       <div class="col-6 collapse-close">
-                          <button type="button" class="navbar-toggler custom-button" data-toggle="collapse" data-target="#navbar-header-1" aria-controls="navbar-header-1" aria-expanded="false" aria-label="Toggle navigation">
-                          <span class=""></span>
-                          <span></span>
-                          </button>
-                       </div>
-                    </div>
-                 </div>
-                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                       <a class="nav-link text-white" href="javascript:;">
-                       Home
-                       </a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="nav-link text-white" href="javascript:;">
-                       About Us
-                       </a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="nav-link text-white" href="javascript:;">
-                       Contact Us
-                       </a>
-                    </li>
-                 </ul>
-                 <ul class="nav navbar-nav">
-                    <li class="nav-item">
-                       <a class="nav-link text-white" href="https://twitter.com/CreativeTim">
-                       <i class="fab fa-twitter"></i>
-                       </a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="nav-link text-white" href="https://www.facebook.com/CreativeTim">
-                       <i class="fab fa-facebook-square"></i>
-                       </a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="nav-link text-white" href="https://www.instagram.com/CreativeTimOfficial">
-                       <i class="fab fa-instagram"></i>
-                       </a>
-                    </li>
-                 </ul>
-              </div>
-           </div>
-        </nav>
+
+
         <div class="page-header">
            <div class="page-header-image" style="background-image: url('/static/assets/img/p2.svg')"></div>
            <div class="container">
@@ -354,14 +314,15 @@ Coded by www.creative-tim.com
                  <div class="col-lg-12 mr-auto text-left d-flex justify-content-center flex-column">
                     <h3 class="display-3 display_header text-center ">Where To?</h3>
                     <div class="d-flex justify-content-center mb-3 search_buttons">
-                        <a type="button" class="text-dark font-weight-bold active" id="searchAll"><i class="fa fa-search mx-2"></i>Search All</a>
+                        <a type="button" class="text-dark font-weight-bold active" id="searchAll"><i class="fa fa-search mx-2"></i>Tourist Spots</a>
                         <a class="text-dark font-weight-bold" id="searchHotels"><i class="fa fa-building mx-2"></i>Accomodations</a>
                 
                     </div>
                     <div class="search">
                         <i class="fa fa-search text-dark"></i>
                         <input type="text" class="form-control" id="searchInput" placeholder="Places to go, hotels, transcients....">
-                        <button class="btn bg-gradient-info text-white">Search</button>
+                        <button class="btn bg-gradient-info text-white" id="search_nearby_tourist_spot"><a href="{% url 'nearby-tourist-spots'%}" class="text-white">Nearby</a></button>
+                        <button class="btn bg-gradient-info text-white" id="search_nearby_accommodation"><a href="{% url 'nearby-accommodations'%}" class="text-white">Nearby</a></button>
                         <div class="suggestions" id="suggestions"></div>
                     </div>
                     <br>
@@ -658,6 +619,7 @@ Coded by www.creative-tim.com
 
 
       
+      <!--
       <div class="testimonials-2">
         <div class="container">
             <div class="row">
@@ -724,8 +686,8 @@ Coded by www.creative-tim.com
                 </div>
             </div>
         </div>
-    </div>
-    
+      </div>
+     -->
  
 
 
@@ -778,24 +740,27 @@ Coded by www.creative-tim.com
   <!--   Core JS Files   -->
   {% include 'includes/scripts.html' %}
 
-  <script>
-
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchAllButton = document.getElementById('searchAll');
         const searchHotelsButton = document.getElementById('searchHotels');
         const searchInput = document.getElementById('searchInput');
-        const titleElement = document.querySelector('.display_header'); // Select the title
+        const titleElement = document.querySelector('.display_header');
+        const searchBtn = document.getElementById('search_nearby_tourist_spot');
+        const searchAccommodationBtn = document.getElementById('search_nearby_accommodation');
     
         searchAllButton.addEventListener('click', function () {
             setActiveButton(searchAllButton);
             searchInput.placeholder = "Places to go, hotels, transcients....";
-            titleElement.textContent = "Where To?"; // Change title
+            titleElement.textContent = "Where To?";
+            toggleButtons(true); // Show tourist spot button, hide accommodation button
         });
     
         searchHotelsButton.addEventListener('click', function () {
             setActiveButton(searchHotelsButton);
             searchInput.placeholder = "Search for hotels...";
-            titleElement.textContent = "Stay somewhere great"; // Change title
+            titleElement.textContent = "Stay somewhere great";
+            toggleButtons(false); // Show accommodation button, hide tourist spot button
         });
     
         function setActiveButton(activeButton) {
@@ -803,73 +768,20 @@ Coded by www.creative-tim.com
             searchHotelsButton.classList.remove('active');
             activeButton.classList.add('active');
         }
-    });
-
-  </script>
-
-  <script>
-    const suggestions = [
-        "New York City",
-        "Los Angeles",
-        "Chicago",
-        "Houston",
-        "Phoenix",
-        "Philadelphia",
-        "San Antonio",
-        "San Diego",
-        "Dallas",
-        "San Jose"
-    ];
-
-    const nearbySuggestions = [
-
-    ];
-
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsBox = document.getElementById('suggestions');
-
-    searchInput.addEventListener('focus', function() {
-        suggestionsBox.innerHTML = `<div class="nearby">Nearby</div><hr>`;
-        nearbySuggestions.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'suggestion-item';
-            div.textContent = item;
-            div.onclick = () => {
-                searchInput.value = item; // Set input value
-                suggestionsBox.style.display = 'none'; // Hide suggestions
-            };
-            suggestionsBox.appendChild(div);
-        });
-        suggestionsBox.style.display = 'block'; // Show suggestions
-    });
-
-    searchInput.addEventListener('input', function() {
-        const input = this.value.toLowerCase();
-        const filteredSuggestions = suggestions.filter(suggestion => 
-            suggestion.toLowerCase().includes(input)
-        );
-
-        if (filteredSuggestions.length) {
-            filteredSuggestions.forEach(suggestion => {
-                const div = document.createElement('div');
-                div.className = 'suggestion-item';
-                div.textContent = suggestion;
-                div.onclick = () => {
-                    searchInput.value = suggestion; // Set input value
-                    suggestionsBox.style.display = 'none'; // Hide suggestions
-                };
-                suggestionsBox.appendChild(div);
-            });
-        }
-    });
-
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!searchInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
-            suggestionsBox.style.display = 'none';
+    
+        function toggleButtons(showTouristSpotButton) {
+            if (showTouristSpotButton) {
+                searchBtn.style.display = 'inline-block'; // Show tourist spot button
+                searchAccommodationBtn.style.display = 'none'; // Hide accommodation button
+            } else {
+                searchBtn.style.display = 'none'; // Hide tourist spot button
+                searchAccommodationBtn.style.display = 'inline-block'; // Show accommodation button
+            }
         }
     });
 </script>
+
+
 
   <script>
 

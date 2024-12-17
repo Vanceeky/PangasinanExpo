@@ -1,0 +1,369 @@
+{% extends 'home/admin/layout.html' %}
+
+{% block title %} {{ accommodation.name }} {% endblock %}
+
+{% block head %} 
+
+<link rel="stylesheet" href="/static/assets/css/splide.min.css">
+    
+<script src="/static/assets/js/splide.min.js"></script>
+
+
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" type="text/css" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"></script>
+
+
+{% endblock %}
+
+
+{% block stylesheet %}
+
+<style>
+    #map {
+        width: 100%;
+        height: 400px;
+    }
+    
+    /* Set the dimensions for each slide */
+    .splide__slide img {
+    width: 100%;   /* Set desired width */
+    height: auto;  /* Set desired height */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
+    }
+
+    /* Optional: center-align carousel */
+    .splide {
+    display: flex;
+    justify-content: center;
+    }
+
+</style>
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<div class="container-fluid my-4">
+
+
+    <nav aria-label="breadcrumb align-items-center">
+
+
+        <ol class="breadcrumb d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+                <h5 class="mt-2 d-none d-lg-block">{{ accommodation.name }}</h5>
+                <div class="vr mx-3 d-none d-lg-block "></div>
+                <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'accommodations-admin' %}">Accomodations</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ accommodation.name }}</li>
+            
+
+           
+            </div>
+        </ol>
+
+    
+    
+    </nav>
+    
+
+
+    <div class="card mt-5 p-3">
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="home" aria-selected="true">General</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#images" role="tab" aria-controls="profile" aria-selected="false">Images</a>
+          </li>
+
+        </ul>
+      
+        <!-- Tab Content -->
+        <div class="tab-content mt-3" id="myTabContent">
+          <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row">
+                <div class="col-md-7">
+                    <form class="p-3">
+
+                        {% csrf_token %}
+
+                        <input id="latitude" name="latitude" class="form-control" type="hidden" value="{{ accommodation.latitude }}" readonly required="required">
+                        <input id="longitude" name="longitude" class="form-control" type="hidden" value="{{ accommodation.longitude }}" readonly required="required">
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                                <h6 class="label text-md" for="#firstName">Manager</h6>
+                            </div>
+                            <div class="col-md-6 align-self-center">
+                                <div class="form-group">
+                                    <input id="manager" name="manager" class="form-control" type="text" value="{{ accommodation.manager.first_name }} {{ accommodation.manager.last_name }}" readonly required="required">
+                                </div>
+                            </div>
+                            <div class="col-md-2 align-self-center">
+                                <a href="{% url 'user-admin' accommodation.manager.id %}"><i class="fa fa-eye"></i> View </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Name</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="accommodation_name" name="accommodation_name" class="form-control" type="text" value="{{ accommodation.name }}" readonly required="required">
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Accommodation Type</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="type" name="type" class="form-control" type="text" value="{{ accommodation.type }}" readonly required="required">
+                            </div>
+                            </div>
+                        </div>
+                        
+
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Description</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="description" id="desc_textarea" rows="1" readonly  oninput="autoResize(this)">{{ accommodation.description }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Address</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="address" name="address" class="form-control" readonly type="text" value="{{ accommodation.address }}" required="required">
+                            </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">City or Town</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="city_town" name="city_town" class="form-control" readonly type="text" value="{{ accommodation.city_town }}" required="required">
+                            </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Status</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="status" name="status" class="form-control" readonly type="text" value="{{ accommodation.status }}" required="required">
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 align-self-center">
+                            <h6 class="label text-md" for="#firstName">Date Added</h6>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                            <div class="form-group">
+                                <input id="status" name="status" class="form-control" readonly type="text" value="{{ accommodation.date_created }}" required="required">
+                            </div>
+                            </div>
+                        </div>
+
+
+                        {% if accommodation.status == 'Denied' %}
+
+                        {% elif accommodation.status == 'Approved' %}
+
+                        {% elif accommodation.status == 'Pending' %}
+
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-outline-success text-default mt-3 me-2" onclick="handleAction('{{ accommodation.id }}', 'approve')">
+                                <i class="fa fa-save"></i> Approve
+                            </button>
+                        
+                            <button class="btn bg-danger text-white mt-3" onclick="handleAction('{{ accommodation.id }}', 'deny')">
+                                <i class="fa fa-trash"></i> Deny
+                            </button>
+                        </div>
+
+                        {% endif %}
+
+
+
+
+
+
+                    </form>
+
+
+                </div>
+
+                <div class="col-md-5">
+                    <!-- Button to toggle the marker's draggable state -->
+
+                    <div class="card p-3">
+                        
+                        <div id="map"></div>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+
+          </div>
+
+          <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="container">
+       
+                    <div class="splide">
+                        <div class="splide__track">
+                          <ul class="splide__list">
+                            {% for img in accommodation.images.all %}
+                            
+                                <li class="splide__slide">
+                                    <img src="{{ img.image.url }}">
+                                </li>
+                            {% endfor %}
+                            
+                          </ul>
+                        </div>
+                    </div>
+      
+
+
+            </div>
+          </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script src="/static/assets/js/bootstrap.min.js"></script>
+
+<script>
+    function handleAction(accommodationId, action) {
+        if (!confirm(`Are you sure you want to ${action} this accommodation?`)) return;
+    
+        fetch(`/accommodation/action/${accommodationId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({ action: action }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                window.location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Something went wrong!');
+        });
+    }
+    </script>
+
+<!-- script for splide js-->
+<script>
+    
+    var splide = new Splide('.splide', {
+      type     : 'loop',    
+      autoplay : false,      
+      interval : 3000,      
+      pauseOnHover: false,  
+      resetProgress: false, 
+    });
+  
+    splide.mount();
+
+
+    function autoResize(element) {
+       
+            element.style.height = 'auto';
+         
+            element.style.height = (element.scrollHeight) + 'px';
+    }
+
+</script>
+
+
+<!-- script for initializing the mapbox-->
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [120.0, 15.9], // Default center
+        zoom: 14
+    });
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+    function setupMap() {
+        // Get the latitude, longitude, and accommodation name from the input fields
+        const latitude = parseFloat(document.getElementById('latitude').value);
+        const longitude = parseFloat(document.getElementById('longitude').value);
+        const locationName = document.getElementById('accommodation_name').value;
+
+        // Check if latitude and longitude are valid numbers
+        if (isNaN(latitude) || isNaN(longitude)) {
+            alert('Invalid latitude or longitude values.');
+            return;
+        }
+
+        // Set the map center to the spot's coordinates
+        map.setCenter([longitude, latitude]);
+
+        // Create a marker at the spot's coordinates
+        new mapboxgl.Marker()
+            .setLngLat([longitude, latitude])
+            .setPopup(new mapboxgl.Popup().setHTML(`<strong>${locationName}</strong>`)) // Show the location name in a popup
+            .addTo(map);
+    }
+
+    map.on('load', setupMap);
+</script>
+
+
+{% endblock %}

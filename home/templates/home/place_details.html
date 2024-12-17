@@ -93,8 +93,17 @@
                 <div class="d-flex">
                     
                     <a href="" class="cursor-pointer font-weight-bold"><i class="fa fa-map-marker mx-2"></i>{{ spot.address }}, <span class="text-underline">{{ spot.city_or_town}}, Pangasinan </span></a>
-                    <a href="" class="cursor-pointer"><i class="fa fa-heart-o mx-2"></i>Save </a>
-                    
+                    <a href="javascript:void(0);" 
+                    class="cursor-pointer toggle-favorite" 
+                    data-spot-id="{{ spot.id }}" 
+                    data-is-favorite="{{ is_favorite|yesno:"true,false" }}">
+                     <i class="fa 
+                         {% if is_favorite %}
+                             fa-heart
+                         {% else %}
+                             fa-heart-o
+                         {% endif %} mx-2"></i>Save
+                 </a>
                 </div>
             </div>
     
@@ -133,18 +142,21 @@
                            </p>
                            <div class="author">
                               
-                                <span class="rating">
-                                 
-                                 
-                                            <i class="fas fa-star" aria-hidden="true"></i>
-                                            <i class="far fa-star" aria-hidden="true"></i>
-                                            <i class="far fa-star" aria-hidden="true"></i>                                        
-                                            <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
-                                            10 Reviews
-                                </span>
+                            {{ average|floatformat:1 }}
+                            <span class="rating">
+                                {% for i in "12345" %}
+                                    {% if average >= i|add:0 %}
+                                        <i class="fas fa-star" aria-hidden="true"></i>
+                                    {% elif average >= i|add:-0.5 %}
+                                        <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                    {% else %}
+                                        <i class="far fa-star" aria-hidden="true"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
 
                                 <br>
-                                <a href="{% url 'map-direction' spot.id %}" type="button" class="btn btn-outline-info mt-3"><i class="fa fa-map"></i> View map directions</a>
+                                <a href="#info" type="button" class="btn btn-outline-info mt-3"><i class="fa fa-map"></i> View map directions</a>
  
                              
                            </div>
@@ -172,158 +184,87 @@
     </section>
 
 
-
-    <div class="wrapper">
-
-        <section class="section bg-secondary">
-          <div class="w-75 m-auto">
-        
-                <div class="row">
-                    <div class="col-lg-12 col-md-8 mx-auto">
-                        <div class="">
-    
-                            <h2 class="title mb-5">Accomodations near Hundred Islands</h2>
-                           
-                        </div>
-                       <div class="card card-blog card-plain blog-horizontal mb-5">
-                          <div class="row">
-                             <div class="col-lg-4">
-                                <div class="card-image shadow">
-                                   <a href="javascript:;">
-                                   <img class="img rounded" src="/static/assets/img/ac.avif">
-                                   </a>
-                                </div>
-                             </div>
-                             <div class="col-lg-8">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h1 class="card-title">
-                                            <a href="javascript:;">OBLU SELECT Lobigili</a>
-                                            <p class="text-underline">
-                                                <i class="fa fa-map-marker fa-2x"></i> Alaminos, Pangasinan</p>
-                
-                                        </h1>
-                                        
-                                        <a type="button" class"border-round btn btn-info">Save <i class="fa fa-heart-o" aria-hidden="true"></i></a>
-    
-                                    </div>
-                                   <p class="card-description">
-                                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, sequi. Eum repellendus rerum incidunt quam magnam voluptates nisi officia iste fugiat necessitatibus, perspiciatis sed id ea illo maiores tempora expedita.... <a href="javascript:;"> Read More </a>
-                                   </p>
-                                   <div class="author">
-                                      
-                                        <span class="rating">
-                                         
-                                         
-                                                    <i class="fas fa-star" aria-hidden="true"></i>
-                                                    <i class="far fa-star" aria-hidden="true"></i>
-                                                    <i class="far fa-star" aria-hidden="true"></i>                                        
-                                                    <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
-                                                    10 Reviews
-                                        </span>
-         
-                                     
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-          
-                    </div>
-                 </div>
-             </div>
-        
-        </section>
-    
-    </div>
-
-    <div class="w-75 m-auto">
-        <div class="row mt-3">
+    <div class="container">
+        <div class="row">
             <div class="col-lg-4 col-12 md-0 mt-4">
                 <div class="card h-auto ">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                       <h5 class="text-capitalize">Reviews</h5>
+                       <h5 class="text-capitalize">{{ total_reviews }} Reviews</h5>
                     </div>
                     <div class="card-body pt-0">
-                       <ul class="list-group list-group-flush list border-bottom">
-                        <li class="list-group-item px-0 mb-2">
-                            <div class="align-items-center">
-                               <div class="d-flex justify-content-between align-items-center">
-                           
-                                <h4>
-                                    {{ average|floatformat:1 }}
-                                    <span class="rating">
-                                        {% for i in "12345" %}
-                                            {% if average >= i|add:0 %}
-                                                <i class="fas fa-star" aria-hidden="true"></i>
-                                            {% elif average >= i|add:-0.5 %}
-                                                <i class="fas fa-star-half-alt" aria-hidden="true"></i>
-                                            {% else %}
-                                                <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
-                                            {% endif %}
-                                        {% endfor %}
-                                    </span>
-                                </h4>
-                                <p>{{ total_reviews }} reviews</p>  <!-- Use total_reviews directly -->
 
-              
+                        <ul class="list-group list-group-flush list">
+                            <li class="list-group-item px-0 mb-2">
+                                <div class="align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4>
+                                            {{ average|floatformat:1 }}
+                                            <span class="rating">
+                                                {% for i in "12345" %}
+                                                    {% if average >= i|add:0 %}
+                                                        <i class="fas fa-star" aria-hidden="true"></i>
+                                                    {% elif average >= i|add:-0.5 %}
+                                                        <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                                    {% else %}
+                                                        <i class="far fa-star" aria-hidden="true"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </li>
 
+                            <li class="list-group-item px-0">
+                     
+                                <h6>Excellent - {{ rating_counts.5 }} reviews</h6>
 
-                               </div>
-                            </div>
-                         </li>
-                                    
-                       </ul>
+                            </li>
 
+                            <li class="list-group-item px-0">
+             
+                                        <h6>Very Good - {{ rating_counts.4 }} reviews</h6>
 
-                         <div class=" justify-content-between align-items-center">
-                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
-                            <div class="progress progress-xs mb-0">
-                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                            </div>
+                            </li>
 
-                         </div>
-                         <div class="mt-2">
-                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
-                            <div class="progress progress-xs mb-0">
-                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                            </div>
+                            <li class="list-group-item px-0">
 
-                         </div>
-                         <div class=" justify-content-between align-items-center">
-                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
-                            <div class="progress progress-xs mb-0">
-                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                            </div>
+                                        <h6>Average - {{ rating_counts.3 }} reviews</h6>
 
-                         </div>
-                         <div class="mt-2">
-                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
-                            <div class="progress progress-xs mb-0">
-                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                            </div>
+                            </li>
 
-                         </div>
-                         <div class=" justify-content-between align-items-center">
-                            <h6>Very Good - {{ rating_counts.good }} reviews</h6>
-                            <div class="progress progress-xs mb-0">
-                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                            </div>
+                            <li class="list-group-item px-0">
+  
+                                        <h6>Poor - {{ rating_counts.2 }} reviews</h6>
 
-                         </div>
+                            </li>
+
+                            <li class="list-group-item px-0">
+
+                                        <h6>Terrible - {{ rating_counts.1 }} reviews</h6>
+
+                            </li>
+                        </ul>
 
 
              
 
+                        {% if request.user.is_authenticated %}
                        <button class=" mt-4 btn btn-outline-info btn-sm w-100" data-toggle="modal" data-target="#add-review">Write a review</button>
+                        {% endif %}
+
+
                     </div>
                 </div>
             </div>
         
+            
+   
             <div class="col-lg-8 col-12 md-0">
 
 
                 <div class="card-body">
+                    {% for test in testimonials %}
 
                     <div class="card h-100 w-100">
                         <div class="card-header d-flex justify-content-between align-items-center border-bottom py-3">
@@ -332,30 +273,41 @@
                               <img src="/static/assets/img/team-4.jpg" class="avatar" alt="profile-image">
                             </a>
                             <div class="mx-3">
-                              <a href="javascript:;" class="text-dark font-weight-600 text-sm">John Snow</a>
-                              <small class="d-block text-muted">3 days ago</small>
+                              <a href="javascript:;" class="text-dark font-weight-600 text-sm text-capitalize">{{ test.user.first_name}} {{ test.user.last_name}}</a>
+                              <small class="d-block text-muted">{{ test.date_created|timesince }} ago</small>
                             </div>
                           </div>
                           <div class="text-end ms-auto">
-                            <button type="button" class="btn btn-xs btn-primary mb-0">
-                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
-                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
-                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
-                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
-                              <i class="fas fa-star pe-2" aria-hidden="true"></i>
-                            </button>
+                            <span class="text-primary text-sm font-weight-bold">
+                                {% for i in "12345" %}
+                                {% if test.rating >= i|add:0 %}
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                {% elif test.rating >= i|add:-0.5 %}
+                                    <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
+                                {% endif %}
+                            {% endfor %}
+                            </span>
                           </div>
                         </div>
                         <div class="card-body">
+                            <h6>" {{ test.review_title }} "</h6>
                           <p class="mb-4">
-                            Personal profiles are the perfect way for you to grab their attention and persuade recruiters to continue reading your CV because you’re telling them from the off exactly why they should hire you.
+                            {{ test.review_content }}
                           </p>
-                          <img alt="Image placeholder" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/activity-feed.jpg" class="img-fluid border-radius-lg shadow-lg max-height-500">
+                          
+                          {% if test.images.all %}
+                          {% for image in test.images.all %}
+                          <img alt="Image placeholder" src="{{ image.image.url }}" class="img-fluid border-radius-lg shadow-lg max-height-500">
+                       
+                          {% endfor %}
+                          {% endif %}
                           <div class="row align-items-center px-2 mt-4 mb-2">
-                            <div class="col-sm-6">
+                            <div class="col">
                               <div class="d-flex">
                                 <div class="d-flex align-items-center">
-                                    <span class="text-sm me-3 font-weight-bold ">Visited in October 25, 2024, With Family</span>
+                                    <span class="text-sm me-3 font-weight-bold ">Visited in {{ test.month_visited }}, With {{ test.visited_with}}</span>
                             
                                   
                                 </div>
@@ -368,48 +320,17 @@
                         </div>
                     </div>
 
+                    {% endfor %}
+
                 </div>
             </div>
+
+           
          
 
             
         </div>
     </div>
-
-
-
-
-
-
-
-    <!--
-<div class="section">
-     <div class="container">
-
-            <div class="row">
-
-                <div class="col-md-6">
-
-                </div>
-
-                <div class="col-md-6">
-                    <div id="map" style="width: 100%; height: 800px;"></div>
-                    <div id="eta" style="padding: 10px; font-weight: bold;"></div>
-                    <div id="distance" style="padding: 10px; font-weight: bold;"></div>
-                    <div id="hotels"></div>
-                </div>
-
-
-                
-            </div>
-
-
-
-    </div>
-
-</div>
-
--->
 
 
 <!-- Modal -->
@@ -419,76 +340,80 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Write a review</h5>
         </div>
-        <div class="modal-body">
-            <center>
-                <input type="hidden" value="" name="place_detail_id">
-                <h5> How would you rate your experience? </h5>
-                <div class="rate" style="text-align: center;">
-                    <input type="radio" id="star5" name="rate" value="5" />
-                    <label for="star5" title="text">5 stars</label>
-                    <input type="radio" id="star4" name="rate" value="4" />
-                    <label for="star4" title="text">4 stars</label>
-                    <input type="radio" id="star3" name="rate" value="3" />
-                    <label for="star3" title="text">3 stars</label>
-                    <input type="radio" id="star2" name="rate" value="2" />
-                    <label for="star2" title="text">2 stars</label>
-                    <input type="radio" id="star1" name="rate" value="1" />
-                    <label for="star1" title="text">1 star</label>
-                </div>
-            </center>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="monthSelect">When did you go?</label>
-                        <select class="form-control" id="monthSelect">
-                            <option value="">Select a month</option>
-                        </select>
+        <form method="POST" action="{% url 'add_review' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body">
+                <center>
+                    <input type="hidden" value="{{ spot.id }}" name="spot_id" required>
+                    <input type="hidden" value="" name="rating" required>
+                    <h5> How would you rate your experience? </h5>
+                    <div class="rate" style="text-align: center;">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="monthSelect">Who did you go with?</label>
-                        <select class="form-control">
-                            <option value="">Solo</option>
-                            <option value="">Family</option>
-                            <option value="">Friends</option>
-                            <option value="">Couples</option>
-                            <option value="">Business</option>
-                        </select>
+                </center>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="monthSelect">When did you go?</label>
+                            <select class="form-control" name="month_visited" id="monthSelect" required>
+                                <option value="">Select a month</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="monthSelect">Who did you go with?</label>
+                            <select class="form-control" name="visited_with" required>
+                                <option value="Solo">Solo</option>
+                                <option value="Family" selected>Family</option>
+                                <option value="Friends">Friends</option>
+                                <option value="Couples">Couples</option>
+                                <option value="Business">Business</option>
+                            </select>
+                        </div>
+                    </div>
 
-            
-            </div>
-
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Title your review</label>
-                <input type="email" class="form-control" id="" placeholder="Give us the gist of your experience">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Write your review</label>
-                <textarea class="form-control" id="" rows="2" placeholder="The views were amazing. We took so many photos!..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Upload some photos<small> ( Optional ) </small> </label>
-                <input type="file" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
                 
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Title your review</label>
+                    <input type="text" name="review_title" class="form-control" id="" placeholder="Give us the gist of your experience" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Write your review</label>
+                    <textarea class="form-control" id="" rows="2" placeholder="The views were amazing. We took so many photos!..." name="review_content" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Upload some photos<small> ( Optional ) </small> </label>
+                    <input type="file" class="form-control" id="exampleFormControlInput1" name="image">
+                    
+                </div>
+
+
+                
+
+
+                <!-- Hidden input field to store the selected rating -->
+                <input type="hidden" id="selected-rating" name="rating" value="">
             </div>
-
-
-            
-
-
-            <!-- Hidden input field to store the selected rating -->
-            <input type="hidden" id="selected-rating" name="rating" value="">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn bg-primary text-white">Add review</button>
-        </div>
+            <div class="modal-footer">
+            <button type="button" class="btn bg-gradient-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="submit-btn" class="btn bg-primary text-white">Add review</button>
+            </div>
+        </form>
       </div>
     </div>
 </div>
@@ -501,19 +426,69 @@
 
 {% block js %}
 
+
 <script>
-    // Function to handle the display of the comment box when a star is selected
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.toggle-favorite').forEach(button => {
+            button.addEventListener('click', function () {
+                const touristSpotId = this.dataset.spotId;
+                const isFavorite = this.dataset.isFavorite === 'true';
+    
+                fetch('/favorites/toggle/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken() // Get CSRF token from cookies
+                    },
+                    body: JSON.stringify({ tourist_spot_id: touristSpotId, action: isFavorite ? 'remove' : 'add' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.dataset.isFavorite = data.is_favorite; // Update favorite status
+                        const icon = this.querySelector('i');
+                        icon.classList.toggle('fa-heart', data.is_favorite);
+                        icon.classList.toggle('fa-heart-o', !data.is_favorite);
+                    } else {
+                        alert('An error occurred. Please try again.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+    
+    // Helper to get CSRF token from cookies
+    function getCSRFToken() {
+        const cookieValue = document.cookie.split('; ').find(row => row.startsWith('csrftoken='));
+        return cookieValue ? cookieValue.split('=')[1] : '';
+    }
+
+    
+</script>
+
+<script>
+    // Disable the submit button by default
+    const submitBtn = document.getElementById('submit-btn');
+    submitBtn.disabled = true;
+
     document.querySelectorAll('.rate input').forEach((input) => {
         input.addEventListener('change', function() {
+            // Update the hidden input with the selected rating value
             const ratingValue = this.value;
-            // Update the hidden input field with the selected rating value
             document.getElementById('selected-rating').value = ratingValue;
 
-            // Show the comment box when a star is selected
-            document.getElementById('comment-box').style.display = 'block';
+            // Show the submit button only if a rating has been selected
+            if (ratingValue) {
+                submitBtn.disabled = false; // Enable the submit button
+            } else {
+                submitBtn.disabled = true;  // Keep it disabled if no rating is selected
+            }
         });
     });
 </script>
+
+
 
 
 <script>
@@ -619,95 +594,6 @@
 </script>
 
 
-<!--
-<script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
-
-    navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
-        enableHighAccuracy: true
-    });
-
-    function successLocation(position) {
-        console.log(position);
-        setupMap([position.coords.longitude, position.coords.latitude]);
-    }
-
-    function errorLocation() {
-        console.error("Unable to retrieve your location.");
-    }
-
-    function setupMap(center) {
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: center,
-            zoom: 8 // Adjust zoom level for a wider view
-        });
-
-        const nav = new mapboxgl.NavigationControl();
-        map.addControl(nav, 'top-right');
-
-        // Add a marker for the user's location
-        new mapboxgl.Marker({ color: 'red' })
-            .setLngLat(center)
-            .addTo(map);
-
-        // Define the destination coordinates (Hundred Islands)
-        const destination = [120.0333, 16.2000];
-
-        // Add a marker for the destination
-        new mapboxgl.Marker({ color: 'blue' })
-            .setLngLat(destination)
-            .addTo(map);
-
-        // Create a directions request URL
-        const directionsUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${center[0]},${center[1]};${destination[0]},${destination[1]}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
-
-        // Fetch the directions
-        fetch(directionsUrl)
-            .then(response => response.json())
-            .then(data => {
-                const route = data.routes[0].geometry.coordinates;
-
-                // Create a line to represent the route
-                const routeLine = {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: route
-                    }
-                };
-
-                // Add the route to the map
-                map.addSource('route', {
-                    type: 'geojson',
-                    data: routeLine
-                });
-
-                map.addLayer({
-                    id: 'route',
-                    type: 'line',
-                    source: 'route',
-                    layout: {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                    },
-                    paint: {
-                        'line-color': '#888',
-                        'line-width': 5
-                    }
-                });
-
-                // Fit the map to the route
-                const bounds = new mapboxgl.LngLatBounds();
-                route.forEach(coord => bounds.extend(coord));
-                bounds.extend(destination); // Include destination in bounds
-                map.fitBounds(bounds, { padding: 20 });
-            })
-            .catch(err => console.error(err));
-    }
-</script>
--->
 
 
 <script>

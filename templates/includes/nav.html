@@ -4,15 +4,9 @@
      <img src="./assets/img/brand/white.png">
      PangasinanExpo
      </a>
-     <form class="w-100 d-lg-block d-none" role="search">
-        <div class="search">
-           <i class="fa fa-search text-dark"></i>
-           <input type="text" class="form-control" id="searchInput" placeholder="Search here....">
-           <div class="suggestions" id="suggestions"></div>
-        </div>
-     </form>
 
-     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+
+     <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
      <span class="navbar-toggler-icon"></span>
      </button>
      <div class="navbar-collapse collapse" id="navbar_global" style="">
@@ -25,7 +19,7 @@
                  </a>
               </div>
               <div class="col-6 collapse-close">
-                 <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+                 <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
                  <span></span>
                  <span></span>
                  </button>
@@ -80,24 +74,29 @@
                <span class="nav-link-inner--text">Account</span>
                </a>
                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <!-- IF accomodation -->
-                  <a class="dropdown-item" href="{% url 'user_dashboard' %}">
-                     <i class="ni ni-lock-circle-open text-muted"></i>
-                     Dashboard
-                  </a>
-                  <a class="dropdown-item" href="">
-                     <i class="ni ni-lock-circle-open text-muted"></i>
-                     Write a review
-                  </a>
+                                
+                  {% for group in request.user.groups.all %}
+                     {% if group.name == "manager" %}
+                        <a class="dropdown-item" href="{% url 'user_accomodation' %}">
+                           <i class="ni ni-building text-muted"></i>
+                           Manage Accommodation
+                        </a>
+                     {% endif %}
+
+                  {% endfor %}
+
+                  {% if not request.user.groups.all %}
                   <a class="dropdown-item" href="{% url 'add-accommodation-page' %}">
                      <i class="ni ni-lock-circle-open text-muted"></i>
                      Add accommodation
                   </a>
-                  <a class="dropdown-item" href="">
+                  {% endif %}
+
+                  <a class="dropdown-item" href="{% url 'user_profile' %}">
                   <i class="ni ni-lock-circle-open text-muted"></i>
                   Account Settings
                   </a>
-                  <a class="dropdown-item" href="">
+                  <a class="dropdown-item" href="{% url 'custom_logout' %}">
                   <i class="ni ni-tv-2 text-danger"></i>
                   Sign out
                   </a>

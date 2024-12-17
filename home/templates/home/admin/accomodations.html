@@ -1,0 +1,147 @@
+{% extends 'home/admin/layout.html' %}
+
+{% block title %} Accomodations {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block stylesheet %}
+<style>
+
+    #table_wrapper{
+        padding: 10px;
+      }
+    
+    </style>
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container-fluid my-4">
+
+
+    <nav aria-label="breadcrumb align-items-center">
+
+
+        <ol class="breadcrumb d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+                <h5 class="mt-2 d-none d-lg-block">Accommodations</h5>
+                <div class="vr mx-3 d-none d-lg-block "></div>
+                <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:;">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Accommodations</li>
+        
+            </div>
+
+            
+
+        </ol>
+        
+        <div class="form-group w-100 d-block d-sm-none">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa fa-search"></i></span>
+              <input class="form-control" placeholder="Search" type="text">
+            </div>
+        </div>
+
+    </nav>
+
+
+    
+    <div class="card">
+        <div class="table-responsive ">
+          <table class="table align-items-center mb-0 table-hover" id="table">
+            <thead>
+              <tr>
+                <th class=" text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Manager</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2">Name</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ">Type</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">City / Town</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Address</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Status</th>
+
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+                {% for acc in accommodations %}
+
+                    <tr>
+                        
+                        <td class="">
+                            <span class="text-secondary text-sm font-weight-bold ms-3 text-capitalize"><a href="{% url 'user-admin' acc.manager.id %}">{{ acc.manager.first_name }} {{ acc.manager.last_name }}</a></span>
+                        </td>
+
+                        <td>
+                            <span class="text-default text-sm font-weight-bold"><a href="{% url 'accommodation-admin' acc.id %}" class="text-primary">{{ acc.name }}</a></span>
+                        </td>
+
+                        <td class="text-center text-sm">
+                            <span class="text-secondary text-sm font-weight-bold">{{ acc.type }}</span>
+                        </td>
+
+                        <td class="align-middle text-center text-sm">
+                            <span class="text-secondary text-sm font-weight-bold">{{ acc.city_town }}</span>
+                        </td>
+
+                        <td class="align-middle text-center">
+                            <span class="text-secondary text-sm font-weight-bold">{{ acc.address }}</span>
+                        </td>
+
+                        <td class="align-middle text-center">
+                            {% if acc.status == 'Approved' %}
+                            <span class="badge bg-gradient-success">{{ acc.status }}</span>
+                            {% elif acc.status == 'Denied' %}
+                            <span class="badge bg-gradient-danger">{{ acc.status }}</span>
+                            {% elif acc.status == 'Pending' %}
+                            <span class="badge bg-gradient-warning">{{ acc.status }}</span>
+
+                            {% endif %}
+                        </td>
+
+                        <td class="align-middle">
+
+                            {% if acc.status == 'Pending' %}
+                            <a href="{% url 'accommodation-admin' acc.id %}" class="text-primary font-weight-bold text-sm" data-toggle="tooltip" data-original-title="Edit user">
+                              <i class="fa fa-check-circle"></i> Review
+                            </a>
+
+                            {% elif acc.status == 'Approved' %}
+                            <a href="{% url 'accommodation-admin' acc.id %}" class="text-primary font-weight-bold text-sm" data-toggle="tooltip" data-original-title="Edit user">
+                                <i class="fa fa-eye"></i> View
+                              </a>
+                            {% endif %}
+
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+         
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+    let table = new DataTable('#table')
+</script>
+
+{% endblock %}

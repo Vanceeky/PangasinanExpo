@@ -5,6 +5,13 @@
 {% block head %} {% endblock %}
 
 {% block stylesheet %}
+<style>
+
+#table_wrapper{
+    padding: 10px;
+  }
+
+</style>
 
 {% endblock %}
 
@@ -32,16 +39,29 @@
            
             </div>
 
+
+
             <!-- This button will appear on larger screens -->
             <div class="d-flex align-items-center">
-                <button class="btn bg-default text-white d-none d-sm-block mt-3 w-100"><i class="fa fa-plus"></i> Add tourist spot</button>
+                <div>
+                <a href="{% url 'add-tourist-spot' %}" type="button" class="btn btn-outline-default active text-dark d-none d-sm-block mt-3 w-100"><i class="fa fa-plus"></i> Add tourist spot</a>
+                </div>
+
             </div>
         </ol>
 
         <!-- Full-width button on small screens (d-sm-none hides it on larger screens) -->
-        <button class="btn bg-white text-dark w-100 d-block d-sm-none"><i class="fa fa-plus"></i> Add tourist spot</button>
+        <a href="{% url 'add-tourist-spot' %}" type="button" class="btn bg-white text-dark w-100 d-block d-sm-none"><i class="fa fa-plus"></i> Add tourist spot</a>
 
+        <div class="d-flex align-items-center  d-block d-sm-none mt-3 me-2">
+            <div class="form-group w-100">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-search"></i></span>
+                  <input class="form-control" placeholder="Search" type="text">
+                </div>
+            </div>
         
+        </div>
     
     
     </nav>
@@ -49,14 +69,14 @@
 
     <div class="card">
         <div class="table-responsive ">
-          <table class="table align-items-center mb-0 table-hover">
+          <table class="table align-items-center mb-0 table-hover" id="table">
             <thead>
               <tr>
                 <th class=" text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Category</th>
                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2">Name</th>
                 <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">City / Town</th>
                 <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Address</th>
-                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Coordinates</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"></th>
 
               </tr>
             </thead>
@@ -82,8 +102,9 @@
                         </td>
 
                         <td class="text-center">
-                            <span class="text-secondary text-sm font-weight-bold">{{ spot.latitude }} / {{ spot.longitude }}</span>
+                            <span class="text-secondary text-sm font-weight-bold"><a href="{% url 'tourist-spot-admin' spot.id %}">View</a></span>
                         </td>
+
                     </tr>
                 {% endfor %}
 
@@ -101,5 +122,9 @@
 
 
 {% block js %}
+
+<script>
+let table = new DataTable('#table')
+</script>
 
 {% endblock %}

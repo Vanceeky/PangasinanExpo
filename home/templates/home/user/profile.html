@@ -1,0 +1,141 @@
+{% extends 'home/layout.html' %}
+
+
+{% block title %} {{ user.first_name }} {{ user.last_name }} {% endblock %}
+
+
+{% block stylesheet %}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="wrapper">
+    <section class="section bg-white">
+        <div class="container">
+            <div class="card card-body blur mx-4 overflow-hidden">
+              <form id="update-customer-form" class="row gx-4" method="POST" action="" enctype="multipart/form-data">
+                <input type="hidden" value="{{ user.id }}" name="user_id">
+                {% csrf_token %}
+                  <div class="col-md-3 z-index-1  ">
+                    <div class="section ">
+                      <section class="z-index-1  text-center">
+                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                          <div id="profile-pic-container" class="mb-3">
+                              <img id="profile-pic" src="{{ user.tourist.avatar.url }}" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                          </div>
+                          <div class="mb-3">
+                              <input type="file" id="file-input" name="avatar" class="d-none" accept="image/*">
+                              <button id="change-profile-btn" type="button" class="btn btn-sm btn-secondary">Change Profile</button>
+                          </div>
+                        </div>
+                          <h3 class="title mt-4 text-capitalize">{{ user.first_name }} {{ user.last_name }} </h3>
+                      </section>
+            
+                    </div>
+    
+    
+                      
+                  </div>
+                  <div class="col-md-8 ml-auto z-index-2">
+                    <div class="">
+             
+                
+                        <p class="text-uppercase text-sm">User Information</p>
+                        <div class="row">
+    
+                          <div class="col-md-6">
+                            <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Firstname</label>
+                            <input class="form-control" type="text" name="firstname" value="{{ user.first_name }}">
+                            </div>
+                          </div>
+    
+                          <div class="col-md-6">
+                            <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Lastname</label>
+                            <input class="form-control" type="text" name="lastname" value="{{ user.last_name }}">
+                            </div>
+                          </div>
+    
+    
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input"  class="form-control-label">Email address</label>
+                                    <input class="form-control" type="email" name="email" value="{{ user.email }}">
+                                </div>
+                            </div>
+    
+                        </div>
+    
+                        <hr class="horizontal dark">
+    
+                        <p class="text-uppercase text-sm">Contact Information</p>
+                        <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Contact Number</label>
+                                    <input class="form-control" type="text" name="contact_number" value="">
+                                    </div>
+                                </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Address</label>
+                                    <input class="form-control" type="text" name="address" value="">
+                                </div>
+                            </div>
+    
+                        </div>
+    
+                        <button type="submit" class="d-flex align-items-end btn btn-outline-info">Save Changes</button>
+    
+                  
+    
+                    </div>
+                 </div>
+    
+    
+    
+    
+    
+                </form>
+            </div>
+          </div>
+    </section>
+
+  </div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+
+<script>
+    document.getElementById('change-profile-btn').addEventListener('click', function() {
+      document.getElementById('file-input').click(); 
+  });
+  
+  
+  document.getElementById('file-input').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              document.getElementById('profile-pic').src = e.target.result; 
+          };
+          reader.readAsDataURL(file); 
+      }
+  });
+  
+  
+</script>
+  
+{% endblock %}

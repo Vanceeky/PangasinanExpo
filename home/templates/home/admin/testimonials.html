@@ -1,0 +1,155 @@
+{% extends 'home/admin/layout.html' %}
+
+{% block title %} Reviews {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block stylesheet %}
+
+<style>
+
+    #table_wrapper{
+        padding: 10px;
+      }
+    
+    </style>
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container-fluid my-4">
+
+
+    <nav aria-label="breadcrumb align-items-center">
+
+
+        <ol class="breadcrumb d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+                <h5 class="mt-2 d-none d-lg-block">Reviews</h5>
+                <div class="vr mx-3 d-none d-lg-block "></div>
+                <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:;">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+            
+            </div>
+
+        </ol>
+
+        
+    
+    
+    </nav>
+
+    
+    
+    <div class="card">
+        <div class="table-responsive ">
+          <table class="table align-items-center mb-0 table-hover" id="table">
+            <thead>
+              <tr>
+                <th class=" text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Tourist</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2">Tourist Spot</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ">Month Visited</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Visited with</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Rating</th>
+                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Review Title</th>
+
+
+
+              </tr>
+            </thead>
+            <tbody>
+
+         
+                {% for test in testimonials %}
+
+                    <tr>
+                        
+                        <td class="">
+                            <span class="text-secondary text-sm font-weight-bold ms-3 text-capitalize"><a href="">{{ test.user.first_name }} {{ test.user.last_name }}</a></span>
+                        </td>
+
+                        <td>
+                            <span class="text-default text-sm font-weight-bold"><a href="{% url 'tourist-spot-admin' test.tourist_spot.id %}" class="text-primary">{{ test.tourist_spot }}</a></span>
+                        </td>
+
+                        <td class="text-center text-sm">
+                            <span class="text-secondary text-sm font-weight-bold">{{ test.month_visited }}</span>
+                        </td>
+
+                        <td class="align-middle text-center text-sm">
+                            <span class="text-secondary text-sm font-weight-bold">{{ test.visited_with }}</span>
+                        </td>
+
+                        
+                        <td class="align-middle text-center">
+                            <span class="font-weight-bold mb-0 text-sm">
+                                {{ test.review_title|slice:":15" }}{% if test.review_title|length > 15 %}...{% endif %}
+                            </span>
+                        </td>
+
+                        <td class="align-middle text-center">
+                     
+                                {% if test.rating == 5 %}
+                                <p class="font-weight-bold mb-0 text-sm">Excellent</p>
+                                {% elif test.rating == 4 %}
+                                    <p class="font-weight-bold mb-0 text-sm">Good</p>
+                                {% elif test.rating == 3 %}
+                                    <p class="font-weight-bold mb-0 text-sm">Average</p>
+                                {% elif test.rating == 2 %}
+                                    <p class="font-weight-bold mb-0">Poor</p>
+                                {% elif test.rating == 1 %}
+                                    <p class="font-weight-bold mb-0 text-sm">Terrible</p>
+                                {% else %}
+                                    <p class="font-weight-bold mb-0 text-sm">No Rating</p>
+                                {% endif %}
+
+                     
+                            <span class="text-secondary text-sm font-weight-bold">
+                                {% for i in "12345" %}
+                                {% if test.rating >= i|add:0 %}
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                {% elif test.rating >= i|add:-0.5 %}
+                                    <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="far fa-star" aria-hidden="true"></i> <!-- Use 'far' class for empty stars -->
+                                {% endif %}
+                            {% endfor %}
+                            </span>
+                        </td>
+
+
+
+
+                    </tr>
+
+                {% endfor %}
+
+               
+         
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+
+
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+    let table = new DataTable('#table')
+</script>
+
+
+{% endblock %}

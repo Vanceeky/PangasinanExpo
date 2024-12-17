@@ -176,10 +176,26 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/ogin/'
+
+
+
+# Looking to send emails in production? Check out our Email API/SMTP product!
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '6d6a5edefc2f28'
+EMAIL_HOST_PASSWORD = '9a75c3728d6594'
+EMAIL_PORT = '2525'
+
+'''
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'lnuinfirmary@gmail.com'
+EMAIL_HOST_PASSWORD = 'tfwr rcnd hnof ijzt'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+'''

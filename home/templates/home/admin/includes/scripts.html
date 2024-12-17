@@ -7,6 +7,7 @@
 
   <script src="/static/assets/js/jquery.min.js"></script>
 
+<script type="text/javascript" src="/static/assets/js/dataTables.min.js"></script>
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
@@ -105,3 +106,20 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/static/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+
+  <script>
+    // Automatically remove alert messages after 3 seconds
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            // Add a fade-out effect (optional)
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+
+            // Remove the alert element from the DOM after fade-out
+            setTimeout(() => {
+                alert.remove();
+            }, 500); // Wait for the fade-out transition
+        });
+    }, 3000); // Remove after 3 seconds
+</script>

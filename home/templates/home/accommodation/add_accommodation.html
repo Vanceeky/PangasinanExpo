@@ -203,15 +203,15 @@
 
 <script>
     document.getElementById('accommodationForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault(); 
     
-        const formData = new FormData(this); // Create FormData object
+        const formData = new FormData(this);
     
         fetch(this.action, {
             method: 'POST',
             body: formData,
             headers: {
-                'X-Requested-With': 'XMLHttpRequest' // Let the server know it's an AJAX request
+                'X-Requested-With': 'XMLHttpRequest' 
             }
         })
         .then(response => response.json())
@@ -223,8 +223,8 @@
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    // Optionally redirect or reset the form
-                    location.reload(); // Reload the page (or use a redirect)
+                   
+                    location.reload(); 
                 });
             } else {
                 Swal.fire({
@@ -252,7 +252,7 @@
         $('#accommodation-type').select2({
             placeholder: "Select an option",
             allowClear: true,
-            width: '100%' // Set width to auto
+            width: '100%'
           
         });
     });
@@ -265,6 +265,32 @@
         const panels = document.querySelectorAll('.multisteps-form__panel');
         let currentPanel = 0;
     
+        // Disable the "Next" button initially
+        const updateNextButtonState = () => {
+            const inputs = panels[currentPanel].querySelectorAll('input, select, textarea');
+            const nextButton = panels[currentPanel].querySelector('.js-btn-next');
+            const isValid = Array.from(inputs).every(input => {
+                if (input.type === 'checkbox') {
+                    return input.checked;
+                } else if (input.type === 'file') {
+                    return input.files.length > 0;
+                } else {
+                    return input.value.trim() !== '';
+                }
+            });
+            nextButton.disabled = !isValid;
+        };
+    
+        // Add event listeners to all inputs in the current panel
+        const addInputListeners = () => {
+            const inputs = panels[currentPanel].querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateNextButtonState);
+                input.addEventListener('change', updateNextButtonState); // For file inputs and checkboxes
+            });
+            updateNextButtonState(); // Check the state initially
+        };
+    
         nextBtns.forEach((btn) => {
             btn.addEventListener('click', () => {
                 if (currentPanel < panels.length - 1) {
@@ -272,6 +298,7 @@
                     currentPanel++;
                     panels[currentPanel].classList.add('js-active');
                     updateProgressBar();
+                    addInputListeners();
                 }
             });
         });
@@ -283,6 +310,7 @@
                     currentPanel--;
                     panels[currentPanel].classList.add('js-active');
                     updateProgressBar();
+                    addInputListeners();
                 }
             });
         });
@@ -297,7 +325,11 @@
                 }
             });
         }
+    
+        // Initialize input listeners for the first panel
+        addInputListeners();
     });
+    
 </script>
 
 

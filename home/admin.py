@@ -3,6 +3,8 @@ from .models import *
 
 # Register your models here.
 # Inline model for Tourist Spot Images
+
+admin.site.register(Tourist)
 class TouristSpotImageInline(admin.TabularInline):
     model = TouristSpotImage
     extra = 1
@@ -35,3 +37,15 @@ class RoomAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Booking)
+
+
+class TestimonialImageInline(admin.TabularInline):
+    model = TestimonialImage
+    extra = 1  # Number of empty forms to display for adding new images
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ('user', 'tourist_spot', 'month_visited', 'visited_with', 'rating', 'review_title')
+    inlines = [TestimonialImageInline]
+
+admin.site.register(Favorites)

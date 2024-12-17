@@ -1,0 +1,139 @@
+{% extends 'home/admin/layout.html' %}
+
+{% block title %} {{ user.first_name }} {{ user.last_name }} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container-fluid my-4">
+
+
+    <nav aria-label="breadcrumb align-items-center">
+
+
+        <ol class="breadcrumb d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex align-items-center">
+                <h5 class="mt-2 d-none d-lg-block">{{ user.first_name }} {{ user.last_name }}</h5>
+                <div class="vr mx-3 d-none d-lg-block "></div>
+                <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'users-admin' %}">Users</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ user.first_name }} {{ user.last_name }}</li>
+        
+            </div>
+
+            
+
+        </ol> 
+
+    </nav>
+
+    <div class="container bg-white card mb-0">
+        <div class="row">
+           <div class="col-md-3">
+              <div class="section">
+                 <!-- User Information -->
+                 <section class="text-center  mt-4">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                       <div id="profile-pic-container" class="mb-3">
+                          <img id="profile-pic" src="{{ user.tourist.avatar.url }}" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                       </div>
+                    </div>
+                    <h3 class="title mt-4">{{ user.first_name }} {{ user.last_name }}</h3>
+                 </section>
+              </div>
+           </div>
+           <div class="col-md-8 ml-auto">
+              <div class="section">
+   
+                       <div class="mt-4">
+                          <div class="row">
+                             <div class="col-md-3 align-self-center">
+                                <label class="labels" for="#firstName">First Name</label>
+                             </div>
+                             <div class="col-md-9 align-self-center">
+                                <div class="form-group">
+                                   <input id="firstName" name="firstName" class="form-control" type="text" value="{{ user.first_name }}" readonly required="required">
+                                </div>
+                             </div>
+                          </div>
+                          <div class="row">
+                             <div class="col-md-3 align-self-center">
+                                <label class="labels" for="#lastName">Last Name</label>
+                             </div>
+                             <div class="col-md-9 align-self-center">
+                                <div class="form-group">
+                                   <input id="lastName" name="lastName" class="form-control" type="text" value="{{ user.last_name }}" readonly required="required">
+                                </div>
+                             </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 align-self-center">
+                               <label class="labels" for="#lastName">Gender</label>
+                            </div>
+                            <div class="col-md-9 align-self-center">
+                               <div class="form-group">
+                                  <input id="lastName" name="lastName" class="form-control" type="text" value="{{ user.tourist.gender }}" readonly required="required">
+                               </div>
+                            </div>
+                         </div>
+
+                          <div class="row">
+                             <div class="col-md-3 align-self-center">
+                                <label class="labels" for="#email">Email</label>
+                             </div>
+                             <div class="col-md-9 align-self-center">
+                                <div class="form-group">
+                                   <input id="email" name="email" class="form-control" type="email" value="{{ user.email }}" readonly required="required">
+                                </div>
+                             </div>
+                          </div>
+
+                          <div class="row">
+                             <div class="col-md-3 align-self-center">
+                                <label class="labels" for="#location">Address</label>
+                             </div>
+                             <div class="col-md-9 align-self-center">
+                                <div class="form-group">
+                                   <input id="location" name="location" class="form-control" type="text" value="{{ user.tourist.address }}"  readonly required="required">
+                                </div>
+                             </div>
+                          </div>
+                          <div class="row">
+                             <div class="col-md-3 align-self-center">
+                                <label class="labels" for="#phone">Phone Number</label>
+                             </div>
+                             <div class="col-md-4 align-self-center">
+                                <div class="form-group">
+                                   <input id="phone" name="phone" class="form-control" type="tel" value="{{ user.tourist.contact_number }}" readonly required="required">
+                                </div>
+                             </div>
+                          </div>
+
+                       </div>
+              
+                 </div>
+              </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block js %}
+
+
+
+{% endblock %}

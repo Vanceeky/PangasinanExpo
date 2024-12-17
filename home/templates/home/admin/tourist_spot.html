@@ -4,6 +4,11 @@
 
 {% block head %} 
 
+  
+    <link rel="stylesheet" href="/static/assets/css/splide.min.css">
+    
+    <script src="/static/assets/js/splide.min.js"></script>
+
     <!-- Include Select2 CSS -->
     <link href="/static/assets/css/select2.min.css" rel="stylesheet" />
 
@@ -24,6 +29,19 @@
         height: 300px;
     }
     
+    /* Set the dimensions for each slide */
+    .splide__slide img {
+    width: 100%;   /* Set desired width */
+    height: 350px;  /* Set desired height */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
+    }
+
+    /* Optional: center-align carousel */
+    .splide {
+    display: flex;
+    justify-content: center;
+    }
+
 </style>
 
 {% endblock %}
@@ -53,17 +71,43 @@
            
             </div>
 
+            <!-- This button will appear on larger screens 
+            <div class="d-flex align-items-center">
+
+                <button class="btn btn-outline-default text-default d-none d-sm-block mt-3 me-2"><i class="fa fa-save"></i> Save </button>
+
+                <button class="btn bg-danger text-white d-none d-sm-block mt-3"><i class="fa fa-trash"></i> Remove </button>
+
+
+            </div>
+            -->
+
         </ol>
 
-
-        
+        <!-- Full-width button on small screens (d-sm-none hides it on larger screens)
+        <button class="btn btn-outline-white text-default w-100 d-block d-sm-none"><i class="fa fa-save"></i> Save</button>
+        <button class="btn bg-danger text-white w-100 d-block d-sm-none"><i class="fa fa-trash"></i> Remove</button>
+         -->
     
     
     </nav>
 
+    {% if messages %}
+    <div class="alert-container container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-white text-center alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        
+    </div>
+    {% endif %}
+
+
     
 
-    <div class="card mt-5 p-3">
+    <div class="card p-3">
         <!-- Nav Tabs -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
@@ -150,10 +194,20 @@
                             </div>
                         </div>
 
+                        <!-- This button will appear on larger screens -->
+                        <div class="d-flex align-items-center justify-content-end">
+
+
+
+                        </div>
+
+
 
 
 
                     </form>
+
+
                 </div>
 
                 <div class="col-md-5">
@@ -163,7 +217,6 @@
                         
                         <div id="map"></div>
                         
-                        <button id="toggleButton" class="btn btn-secondary mt-3" onclick="toggleDraggable()">Adjust Pin Location</button>
                     </div>
                 </div>
             </div>
@@ -171,12 +224,97 @@
 
 
           </div>
+
           <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="profile-tab">
-            <h5>Profile Tab</h5>
-            <p>This is the content for the Profile tab.</p>
+            <div class="row">
+
+                <div class="col-md-7">
+                    <form method="POST" enctype="multipart-form/data">
+
+                        <div class="table-responsive ">
+                            <table class="table align-items-center mb-0 table-hover">
+                              <thead>
+                                <tr>
+                                  <th class=" text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Images</th>
+                                  <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2"></th>
+                  
+                                </tr>
+                              </thead>
+                              <tbody>
+                  
+                       
+                                    {% for images in spot.images.all %}
+
+                                      <tr>
+                                          
+                                        <td>
+            
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <span class="mb-0 text-sm">Currently: <a href="{{ images.image.url }}" target="_blank" class="text-primary">{{ images.image.url }}</a></span>
+                                                <span class="mb-0 text-sm">Change: <input type="file" name="image" accept="image/*"></span>
+                                    
+                                            </div>
+                                           
+                                          </td>
+                                          <!--
+                                          <td class="align-middle">
+                                            <a href="javascript:;" class="text-danger font-weight-bold text-sm" data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="fa fa-trash"></i> Remove
+                                              </a>
+                                          </td>
+                                          -->
+                  
+
+                                      </tr>
+
+                                    {% endfor %}
+                    
+                              </tbody>
+                            </table>
+
+
+                      
+                        
+                        <div id="image-input-container" class="mt-3"></div>
+
+
+                        </div>
+
+                        <hr class="dark horizontal">
+                        <!--
+                        <div class="mt-3 d-flex justify-content-end align-items-center">
+                            <button type="button" id="add-image-input" class="btn btn-outline-default mt-3 me-2">Add tourist spot
+                                image</button>
+
+                        </div>
+                        -->
+
+                    </form>
+
+                </div>
+
+                <div class="col-md-5">
+                    <div class="splide">
+                        <div class="splide__track">
+                          <ul class="splide__list">
+                            {% for img in spot.images.all %}
+                            
+                                <li class="splide__slide">
+                                    <img src="{{ img.image.url }}">
+                                </li>
+                            {% endfor %}
+                            
+                          </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
           </div>
 
         </div>
+
     </div>
 
 
@@ -198,6 +336,7 @@
 
 
 
+<!-- script for select2js -->
 
 <script>
     $(document).ready(function() {
@@ -215,7 +354,6 @@
 
     });
 </script>
-
 
 <script>
     // List of towns
@@ -325,6 +463,8 @@
 </script>
 
 
+<!-- script for initializing the mapbox-->
+
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoidmFuY2VlcSIsImEiOiJjbTFwMjFydWMxOTNpMmtvazYxZ2k0ejlzIn0.yFYzZ1HeE_0KJSyXGYqjRA';
     
@@ -379,6 +519,47 @@
   
     map.on('load', setupMap);
 
-  </script>
+</script>
+
+<!-- script for adding a new file field-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+   
+        const addImageButton = document.getElementById("add-image-input");
+        const imageInputContainer = document.getElementById("image-input-container");
+
+ 
+        addImageButton.addEventListener("click", function () {
+           
+            const inputGroup = document.createElement("div");
+            inputGroup.classList.add("form-group", "mt-3");
+
+        
+            inputGroup.innerHTML = `
+                <hr class="dark horizontal">
+                <input type="file" name="new_images[]" class="form-control" accept="image/*">
+            `;
+
+            
+            imageInputContainer.appendChild(inputGroup);
+        });
+    });
+</script>
+
+
+<!-- script for splide js-->
+<script>
+    
+    var splide = new Splide('.splide', {
+      type     : 'loop',    
+      autoplay : false,      
+      interval : 3000,      
+      pauseOnHover: false,  
+      resetProgress: false, 
+    });
+  
+    splide.mount();
+</script>
+
 
 {% endblock %}

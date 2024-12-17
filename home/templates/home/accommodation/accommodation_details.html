@@ -42,6 +42,8 @@
   }
 
 
+
+
 {% endblock %}
 
 
@@ -271,51 +273,54 @@
         </button>
       </div>
 
-      <form id="bookingForm">
+      <form id="bookingForm" action="{% url 'book_room' %}" method="POST">
+        {% csrf_token %}
         <div class="modal-body">
-          <input type="hidden" name="room_id" id="room_id_modal">
-
-          <a href="javascript:;" class="card-title h5 d-block text-darker font-weight-bold">
-            ₱ <span class="rate_per_night"></span> <small class="text-sm text-muted">/ per night</small> - 
-            <small>Good for <span class="number_people">3</span> people </small>
-          </a>
-
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="check_in" class="form-control-label">Check-in Date: </label>
-                <input class="form-control" type="date" name="check_in" id="check_in" required>
-              </div>
+            <input type="hidden" name="room_id" id="room_id_modal">
+            <input type="hidden" name="room_type" class="room_type_input">
+    
+            <a href="javascript:;" class="card-title h5 d-block text-darker font-weight-bold">
+                ₱ <span class="rate_per_night"></span> 
+                <small class="text-sm text-muted">/ per night</small> - 
+                <small>Good for <span class="number_people">3</span> people </small>
+            </a>
+    
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="check_in" class="form-control-label">Check-in Date: </label>
+                        <input class="form-control" type="date" name="check_in" id="check_in" required>
+                    </div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="check_out" class="form-control-label">Check-out Date: </label>
+                        <input class="form-control" type="date" name="check_out" id="check_out" required>
+                    </div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nights" class="form-control-label">Number of nights: </label>
+                        <input class="form-control" type="text" id="nights" readonly>
+                    </div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="total_price" class="form-control-label">Total Price: </label>
+                        <input class="form-control" type="text" id="total_price" readonly>
+                    </div>
+                </div>
             </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="check_out" class="form-control-label">Check-out Date: </label>
-                <input class="form-control" type="date" name="check_out" id="check_out" required>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="nights" class="form-control-label">Number of nights: </label>
-                <input class="form-control" type="text" id="nights" readonly>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="total_price" class="form-control-label">Total Price: </label>
-                <input class="form-control" type="text" id="total_price" readonly>
-              </div>
-            </div>
-
-          </div>
         </div>
-
+    
         <div class="modal-footer">
-          <button type="button" onclick="" class="btn bg-gradient-default text-white">Book room</button>
+            <button type="button" id="submitBookingForm" class="btn bg-gradient-default text-white">Book room</button>
         </div>
       </form>
+
     </div>
   </div>
 </div>
@@ -438,6 +443,7 @@
       const capacity = this.getAttribute('data-capacity'); // Get capacity
 
       document.querySelector('.room_type_header').textContent = roomType;
+      document.querySelector('.room_type_input').value = roomType;
       document.getElementById('room_id_modal').value = roomId;
       document.getElementById('room_id_modal').dataset.price = price; // Store price as a dataset attribute
       document.querySelector('.rate_per_night').textContent = price; // Update the rate per night display
@@ -453,6 +459,81 @@
 </script>
 
 
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('submitBookingForm').addEventListener('click', function (e) {
+
+        e.preventDefault();
+    // Hide the modal using Bootstrap's custom modal class (vanilla JS)
+    document.getElementById('book-modal').classList.remove('show');
+    document.getElementById('book-modal').setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open'); // Close modal
+    document.getElementsByClassName('modal-backdrop')[0].remove(); // Remove backdrop
+
+        // Gather data from the form
+        const checkIn = document.getElementById('check_in').value;
+        const checkOut = document.getElementById('check_out').value;
+        const totalPrice = document.getElementById('total_price').value;
+
+        
+
+        // SweetAlert2 Confirmation
+        Swal.fire({
+            title: 'Confirm Booking',
+            html: `
+                <strong>Check-in Date:</strong> ${checkIn}<br>
+                <strong>Check-out Date:</strong> ${checkOut}<br>
+                <strong>Total Price:</strong> ₱${totalPrice}<br><br>
+                Are you sure you want to book this room?
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, book it!',
+            cancelButtonText: 'No, cancel!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+              
+                // Submit the form
+                const form = document.getElementById('bookingForm');
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.available) {
+                        Swal.fire(
+                            'Booking Submitted!',
+                            'Your booking is awaiting approval.',
+                            'success'
+                        ).then(() => {
+                            // Optionally reload or redirect
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Booking Failed!',
+                            data.error || 'The room is not available for the selected dates.',
+                            'error'
+                        );
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire(
+                        'Error',
+                        'An error occurred while processing your booking. Please try again.',
+                        'error'
+                    );
+                });
+            }
+        });
+    });
+</script>
 
 
 {% endblock %}
